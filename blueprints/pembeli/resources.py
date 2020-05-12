@@ -11,8 +11,9 @@ api = Api(bp_buyer)
 
 
 class Buyer(Resource):
+    def options(self):
+        return {'status': 'ok'}, 200
 
-    @jwt_required
     @internal_required
     def post(self):
         claims = get_jwt_claims()
@@ -32,7 +33,6 @@ class Buyer(Resource):
         return marshal(buyer, Buyers.response_fields), 200, {'Content-Type': 'application/json'}
 
     @internal_required
-    @jwt_required
     def get(self):
         claims = get_jwt_claims()
         qry = Buyers.query.filter_by(user_id=claims['id']).first()
@@ -44,7 +44,6 @@ class Buyer(Resource):
         return {'status': 'biodata tidak ada'}, 404
 
     @internal_required
-    @jwt_required
     def patch(self):
         claims = get_jwt_claims()
         qry = Buyers.query.filter_by(user_id=claims['id']).first()
@@ -79,6 +78,8 @@ class Buyer(Resource):
 
 
 class BuyerAdmin(Resource):
+    def options(self):
+        return {'status': 'ok'}, 200
 
     @admin_required
     def delete(self, id):
@@ -127,4 +128,4 @@ class BuyerAdmin(Resource):
 
 
 api.add_resource(BuyerAdmin, '/admin', '/admin/<id>')
-api.add_resource(Buyer, '', '')
+api.add_resource(Buyer, '')

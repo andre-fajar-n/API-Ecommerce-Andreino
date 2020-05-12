@@ -12,6 +12,9 @@ bp_product = Blueprint('product', __name__)
 api = Api(bp_product)
 
 class ProductSeller(Resource):
+    def options(self):
+        return {'status': 'ok'}, 200
+    
     @penjual_required
     def post(self):
         parser = reqparse.RequestParser()
@@ -134,6 +137,9 @@ class ProductSeller(Resource):
         return {'status': 'DELETED'}, 200
     
 class ProductUser(Resource):
+    def options(self):
+        return {'status': 'ok'}, 200
+    
     def get(self, id):
         qry = Products.query.get(id)
         if qry is not None:
@@ -144,6 +150,9 @@ class ProductUser(Resource):
         return {'status': 'ID produk tidak ditemukan'}, 404
     
 class ProductUserAll(Resource):
+    def options(self):
+        return {'status': 'ok'}, 200
+    
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('p', type=int, location='args', default=1)
@@ -175,6 +184,9 @@ class ProductUserAll(Resource):
         return rows, 200
 
 class ProductAdmin(Resource):
+    def options(self):
+        return {'status': 'ok'}, 200
+    
     @admin_required
     def delete(self, id):
         qry = Products.query.get(id)
@@ -190,6 +202,6 @@ class ProductAdmin(Resource):
         return {'status': 'DELETED'}, 200
     
 api.add_resource(ProductSeller, '/penjual', '/penjual/<id>')
-api.add_resource(ProductUser, '/<id>', '/<id>')
-api.add_resource(ProductUserAll, '', '')
-api.add_resource(ProductAdmin, '/admin/<id>', '/admin/<id>')
+api.add_resource(ProductUser, '/<id>')
+api.add_resource(ProductUserAll, '')
+api.add_resource(ProductAdmin, '/admin/<id>')

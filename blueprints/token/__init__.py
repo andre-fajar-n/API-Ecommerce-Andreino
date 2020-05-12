@@ -13,6 +13,8 @@ api = Api(bp_auth)
 
 
 class CreateTokenResource(Resource):
+    def options(self):
+        return {'status': 'ok'}, 200
 
     def get(self):
         parser = reqparse.RequestParser()
@@ -36,6 +38,8 @@ class CreateTokenResource(Resource):
 
 
 class RefreshTokenResource(Resource):
+    def options(self):
+        return {'status': 'ok'}, 200
 
     @internal_required
     @jwt_required

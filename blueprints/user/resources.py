@@ -13,12 +13,14 @@ api = Api(bp_user)
 
 
 class User(Resource):
+    def options(self):
+        return {'status': 'ok'}, 200
 
     def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument('username', location='json', required=True)
         parser.add_argument('password', location='json', required=True)
-        parser.add_argument('status_internal', location='json', type=bool)
+        parser.add_argument('status_internal', location='json', type=bool, default=True)
         parser.add_argument('status_penjual', location='json', type=bool)
         parser.add_argument('status_admin', location='json', type=bool)
         args = parser.parse_args()
@@ -82,6 +84,9 @@ class User(Resource):
 
 
 class UserAdmin(Resource):
+    def options(self):
+        return {'status': 'ok'}, 200
+    
     @admin_required
     def delete(self, id):
         qry = Users.query.get(id)
@@ -126,4 +131,4 @@ class UserAdmin(Resource):
         return rows, 200
 
 api.add_resource(UserAdmin,'/admin', '/admin/<id>')
-api.add_resource(User, '', '')
+api.add_resource(User, '')

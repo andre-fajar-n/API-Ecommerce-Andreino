@@ -11,9 +11,10 @@ api = Api(bp_seller)
 
 
 class Seller(Resource):
+    def options(self):
+        return {'status': 'ok'}, 200
 
     @penjual_required
-    @jwt_required
     def post(self):
         claims = get_jwt_claims()
         parser = reqparse.RequestParser()
@@ -32,7 +33,6 @@ class Seller(Resource):
         return marshal(seller, Sellers.response_fields), 200, {'Content-Type': 'application/json'}
 
     @penjual_required
-    @jwt_required
     def get(self):
         claims = get_jwt_claims()
         qry = Sellers.query.filter_by(user_id=claims['id']).first()
@@ -75,6 +75,8 @@ class Seller(Resource):
 
 
 class SellerAdmin(Resource):
+    def options(self):
+        return {'status': 'ok'}, 200
 
     @admin_required
     def delete(self, id):
@@ -123,4 +125,4 @@ class SellerAdmin(Resource):
 
 
 api.add_resource(SellerAdmin, '/admin/<id>', '/admin')
-api.add_resource(Seller, '', '')
+api.add_resource(Seller, '')

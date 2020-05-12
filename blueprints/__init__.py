@@ -3,6 +3,7 @@ import json
 import os
 
 from functools import wraps
+from flask_cors import CORS
 from flask_jwt_extended import JWTManager, get_jwt_claims, verify_jwt_in_request
 from flask import Flask, request
 from flask_migrate import Migrate, MigrateCommand
@@ -11,6 +12,11 @@ from flask_sqlalchemy import SQLAlchemy
 
 ###############################################################
 app = Flask(__name__)
+
+CORS(app, origins="*", allow_headers=[
+    "Content-Type", "Authorization", "Access-Control-Allow-Credentials"],
+    supports_credentials=True, intercept_exceptions=False)
+
 jwt = JWTManager(app)
 
 
@@ -19,7 +25,7 @@ def internal_required(fn):
     def wrapper(*args, **kwargs):
         verify_jwt_in_request()
         claims = get_jwt_claims()
-        if not claims['status_internal']: # hard code
+        if not claims['status_internal']:  # hard code
             return {'status': 'FORBIDDEN', 'message': 'Internal Only!'}, 403
         else:
             return fn(*args, **kwargs)
@@ -31,7 +37,7 @@ def penjual_required(fn):
     def wrapper(*args, **kwargs):
         verify_jwt_in_request()
         claims = get_jwt_claims()
-        if not claims['status_penjual']: # hard code
+        if not claims['status_penjual']:  # hard code
             return {'status': 'FORBIDDEN', 'message': 'Bukan penjual'}, 403
         else:
             return fn(*args, **kwargs)
@@ -43,7 +49,7 @@ def admin_required(fn):
     def wrapper(*args, **kwargs):
         verify_jwt_in_request()
         claims = get_jwt_claims()
-        if not claims['status_admin']: # hard code
+        if not claims['status_admin']:  # hard code
             return {'status': 'FORBIDDEN', 'message': 'Bukan admin'}, 403
         else:
             return fn(*args, **kwargs)

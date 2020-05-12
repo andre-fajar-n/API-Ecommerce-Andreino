@@ -11,6 +11,8 @@ api = Api(bp_product_categories)
 
 
 class ProductTypeAdmin(Resource):
+    def options(self):
+        return {'status': 'ok'}, 200
 
     @admin_required
     def post(self):
@@ -61,6 +63,8 @@ class ProductTypeAdmin(Resource):
         return {'status': 'DELETED'}, 200
 
 class ProductTypeUser(Resource):
+    def options(self):
+        return {'status': 'ok'}, 200
 
     def get(self, id):
         qry = ProductCategories.query.get(id)
@@ -72,6 +76,9 @@ class ProductTypeUser(Resource):
         return {'status': 'NOT_FOUND'}, 404
     
 class ProductTypeUserList(Resource):
+    def options(self):
+        return {'status': 'ok'}, 200
+    
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('p', type=int, location='args', default=1)
@@ -102,5 +109,5 @@ class ProductTypeUserList(Resource):
 
 
 api.add_resource(ProductTypeAdmin, '/admin', '/admin/<id>')
-api.add_resource(ProductTypeUser, '/<id>', '/<id>')
-api.add_resource(ProductTypeUserList, '', '')
+api.add_resource(ProductTypeUser, '/<id>')
+api.add_resource(ProductTypeUserList, '')

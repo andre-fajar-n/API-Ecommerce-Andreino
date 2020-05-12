@@ -15,6 +15,8 @@ api = Api(bp_cart)
 
 
 class CartsResource(Resource):
+    def options(self):
+        return {'status': 'ok'}, 200
 
     @internal_required
     def get(self):
@@ -23,7 +25,7 @@ class CartsResource(Resource):
         if buyer is None:
             app.logger.debug('DEBUG : pembeli tidak ada')
             return {'status': 'NOT_FOUND', 'message': 'pembeli tidak ada'}, 404
-        
+
         cart = Carts.query.filter_by(buyer_id=buyer.id)
         # cart = cart.all()
         result = []
@@ -32,8 +34,7 @@ class CartsResource(Resource):
             marshal_seller = marshal(seller, Sellers.response_fields)
             marshal_qry = marshal(qry, Carts.response_fields)
             marshal_qry['seller_id'] = marshal_seller
-            transaction_detail = TransactionDetails.query.filter_by(
-                cart_id=qry.id)
+            transaction_detail = TransactionDetails.query.filter_by(cart_id=qry.id)
             transaction_detail = transaction_detail.all()
             list_td = []
             for td in transaction_detail:
@@ -81,11 +82,12 @@ class CartsResource(Resource):
         #     transaction_detail.kuantitas = args['quantity']
         #     transaction_detail.harga = product.harga * args['quantity']
         #     db.session.commit()
-        
-        td = TransactionDetails(product.harga, args['quantity'], cart.id, args['product_id'])
+
+        td = TransactionDetails(
+            product.harga, args['quantity'], cart.id, args['product_id'])
         db.session.add(td)
         db.session.commit()
-        
+
         cart.total_kuantitas += args['quantity']
         cart.total_harga += int(product.harga)*int(args['quantity'])
         db.session.commit()
@@ -103,12 +105,13 @@ class CartsResource(Resource):
         qry = Carts.query.get(id)
         db.session.delete(qry)
         db.session.commit()
-        
+
         app.logger.debug('DEBUG : data telah terhapus')
 
         return {'status': 'DELETED'}, 200
         # claims = get_jwt_claims()
         # buyer = Buyers.query.filter_by(user_id=claims['id'])
         # cart = Carts.query.filter_by(buyer_id=buyer.id).first()
+
 
 api.add_resource(CartsResource, '', '/<id>')
