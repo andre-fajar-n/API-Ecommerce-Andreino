@@ -29,14 +29,16 @@ class Sellers(db.Model):
         'nama': fields.String,
         'email': fields.String,
         'alamat': fields.String,
-        'no_hp': fields.String
+        'no_hp': fields.String,
+        'user_id':fields.Integer
     }
 
-    def __init__(self, nama, email, alamat, no_hp):
+    def __init__(self, nama, email, alamat, no_hp, user_id):
         self.nama = nama
         self.email = email
         self.alamat = alamat
         self.no_hp = no_hp
+        self.user_id = user_id
 
     def __repr__(self):
         return '<Seller %r>' % self.id

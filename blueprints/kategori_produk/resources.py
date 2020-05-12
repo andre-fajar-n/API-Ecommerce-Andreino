@@ -10,10 +10,9 @@ bp_product_categories = Blueprint('product_categories', __name__)
 api = Api(bp_product_categories)
 
 
-class ProductTypeResource(Resource):
+class ProductTypeAdmin(Resource):
 
     @admin_required
-    @penjual_required
     def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument('tipe_produk', location='json', required=True)
@@ -27,17 +26,6 @@ class ProductTypeResource(Resource):
 
         return marshal(product_types, ProductCategories.response_fields), 200, {'Content-Type': 'application/json'}
 
-    # @internal_required
-    def get(self, id):
-        qry = ProductCategories.query.get(id)
-        if qry is not None:
-            app.logger.debug('DEBUG : %s', qry)
-            return marshal(qry, ProductCategories.response_fields), 200
-
-        app.logger.debug('DEBUG : id tidak ada')
-        return {'status': 'NOT_FOUND'}, 404
-
-    @internal_required
     @admin_required
     def patch(self, id):
         qry = ProductCategories.query.get(id)
@@ -58,7 +46,6 @@ class ProductTypeResource(Resource):
 
         return marshal(qry, ProductCategories.response_fields), 200, {'Content-Type': 'application/json'}
 
-    @penjual_required
     @admin_required
     def delete(self, id):
         qry = ProductCategories.query.get(id)
@@ -73,10 +60,18 @@ class ProductTypeResource(Resource):
 
         return {'status': 'DELETED'}, 200
 
+class ProductTypeUser(Resource):
 
-class ProductTypeList(Resource):
+    def get(self, id):
+        qry = ProductCategories.query.get(id)
+        if qry is not None:
+            app.logger.debug('DEBUG : %s', qry)
+            return marshal(qry, ProductCategories.response_fields), 200
 
-    # @penjual_required
+        app.logger.debug('DEBUG : id tidak ada')
+        return {'status': 'NOT_FOUND'}, 404
+    
+class ProductTypeUserList(Resource):
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('p', type=int, location='args', default=1)
@@ -106,5 +101,6 @@ class ProductTypeList(Resource):
         return rows, 200
 
 
-api.add_resource(ProductTypeList, '', '/list')
-api.add_resource(ProductTypeResource, '', '/<id>')
+api.add_resource(ProductTypeAdmin, '/admin', '/admin/<id>')
+api.add_resource(ProductTypeUser, '/<id>', '/<id>')
+api.add_resource(ProductTypeUserList, '', '')

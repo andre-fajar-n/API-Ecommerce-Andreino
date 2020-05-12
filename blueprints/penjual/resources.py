@@ -10,10 +10,12 @@ bp_seller = Blueprint('seller', __name__)
 api = Api(bp_seller)
 
 
-class SellerResource(Resource):
+class Seller(Resource):
 
     @penjual_required
+    @jwt_required
     def post(self):
+        claims = get_jwt_claims()
         parser = reqparse.RequestParser()
         parser.add_argument('nama', location='json', required=True)
         parser.add_argument('email', location='json', required=True)
@@ -21,8 +23,7 @@ class SellerResource(Resource):
         parser.add_argument('no_hp', location='json', required=True)
         args = parser.parse_args()
 
-        seller = Sellers(args['nama'], args['email'],
-                         args['alamat'], args['no_hp'])
+        seller = Sellers(args['nama'], args['email'],args['alamat'], args['no_hp'], claims['id'])
         db.session.add(seller)
         db.session.commit()
 
@@ -31,9 +32,11 @@ class SellerResource(Resource):
         return marshal(seller, Sellers.response_fields), 200, {'Content-Type': 'application/json'}
 
     @penjual_required
+    @jwt_required
     def get(self):
         claims = get_jwt_claims()
         qry = Sellers.query.filter_by(user_id=claims['id']).first()
+        print("cek", qry)
         if qry is not None:
             app.logger.debug('DEBUG : %s', qry)
             return marshal(qry, Sellers.response_fields), 200
@@ -71,7 +74,7 @@ class SellerResource(Resource):
         return marshal(qry, Sellers.response_fields), 200, {'Content-Type': 'application/json'}
 
 
-class SellerList(Resource):
+class SellerAdmin(Resource):
 
     @admin_required
     def delete(self, id):
@@ -119,5 +122,5 @@ class SellerList(Resource):
         return rows, 200
 
 
-api.add_resource(SellerList, '/admin/<id>', '/admin')
-api.add_resource(SellerResource, '', '/user')
+api.add_resource(SellerAdmin, '/admin/<id>', '/admin')
+api.add_resource(Seller, '', '')

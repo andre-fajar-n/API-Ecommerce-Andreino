@@ -17,23 +17,22 @@ class TransactionDetails(db.Model):
     kuantitas = db.Column(db.Integer, default=0)
     cart_id = db.Column(db.Integer, db.ForeignKey('carts.id'))
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'))
-    created_at = db.Column(db.DateTime(timezone=True),
-                           server_default=func.now())
+    created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 
     response_fields = {
         'id': fields.Integer,
         'harga': fields.Integer,
         'kuantitas': fields.Integer,
-        'transaction_id': fields.Integer,
+        'cart_id': fields.Integer,
         'product_id': fields.Integer,
     }
 
-    def __init__(self, harga, kuantitas, transaction_id, product_id):
+    def __init__(self, harga, kuantitas, cart_id, product_id):
         self.harga = harga
         self.kuantitas = kuantitas
-        self.transaction_id = transaction_id
+        self.cart_id = cart_id
         self.product_id = product_id
 
     def __repr__(self):
-        return '<Products %r>' % self.id
+        return '<TransactionDetails %r>' % self.id

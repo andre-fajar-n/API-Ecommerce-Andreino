@@ -12,15 +12,15 @@ bp_user = Blueprint('user', __name__)
 api = Api(bp_user)
 
 
-class UserResource(Resource):
+class User(Resource):
 
     def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument('username', location='json', required=True)
         parser.add_argument('password', location='json', required=True)
-        parser.add_argument('status_internal', location='json')
-        parser.add_argument('status_penjual', location='json')
-        parser.add_argument('status_admin', location='json')
+        parser.add_argument('status_internal', location='json', type=bool)
+        parser.add_argument('status_penjual', location='json', type=bool)
+        parser.add_argument('status_admin', location='json', type=bool)
         args = parser.parse_args()
 
         salt = uuid.uuid4().hex
@@ -56,25 +56,32 @@ class UserResource(Resource):
             return {'status': 'NOT_FOUND'}, 404
 
         parser = reqparse.RequestParser()
-        parser.add_argument('username', location='json', required=True)
-        parser.add_argument('password', location='json', required=True)
-        parser.add_argument('status_penjual', location='json')
+        parser.add_argument('username', location='json')
+        parser.add_argument('password', location='json')
+        parser.add_argument('status_penjual', location='json', type=bool)
         args = parser.parse_args()
 
-        salt = uuid.uuid4().hex
-        encoded = ('%s%s' % (args['password'], salt)).encode('utf-8')
-        hash_pass = hashlib.sha512(encoded).hexdigest()
+        if args['username'] is not None:
+            qry.username = args['username']
+        
+        if args['password'] is not None:
+            salt = uuid.uuid4().hex
+            encoded = ('%s%s' % (args['password'], salt)).encode('utf-8')
+            hash_pass = hashlib.sha512(encoded).hexdigest()
 
-        qry.username = args['username']
-        qry.password = hash_pass
-        qry.salt = salt
-        qry.status_penjual = args
+            qry.password = hash_pass
+            qry.salt = salt
+            
+        if args['status_penjual'] is not None:
+            qry.status_penjual = args['status_penjual']
         db.session.commit()
 
         app.logger.debug('DEBUG : %s', qry)
 
         return marshal(qry, Users.response_fields), 200, {'Content-Type': 'application/json'}
 
+
+class UserAdmin(Resource):
     @admin_required
     def delete(self, id):
         qry = Users.query.get(id)
@@ -88,9 +95,6 @@ class UserResource(Resource):
         app.logger.debug('DEBUG : data telah terhapus')
 
         return {'status': 'DELETED'}, 200
-
-
-class UserList(Resource):
 
     @admin_required
     def get(self):
@@ -121,6 +125,5 @@ class UserList(Resource):
 
         return rows, 200
 
-
-api.add_resource(UserList, '', '/list')
-api.add_resource(UserResource, '')
+api.add_resource(UserAdmin,'/admin', '/admin/<id>')
+api.add_resource(User, '', '')

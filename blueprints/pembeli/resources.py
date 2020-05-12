@@ -10,10 +10,12 @@ bp_buyer = Blueprint('buyer', __name__)
 api = Api(bp_buyer)
 
 
-class BuyerResource(Resource):
+class Buyer(Resource):
 
+    @jwt_required
     @internal_required
     def post(self):
+        claims = get_jwt_claims()
         parser = reqparse.RequestParser()
         parser.add_argument('nama', location='json', required=True)
         parser.add_argument('email', location='json', required=True)
@@ -21,8 +23,7 @@ class BuyerResource(Resource):
         parser.add_argument('no_hp', location='json', required=True)
         args = parser.parse_args()
 
-        buyer = Buyers(args['nama'], args['email'],
-                       args['alamat'], args['no_hp'])
+        buyer = Buyers(args['nama'], args['email'],args['alamat'], args['no_hp'], claims['id'])
         db.session.add(buyer)
         db.session.commit()
 
@@ -58,10 +59,18 @@ class BuyerResource(Resource):
         parser.add_argument('no_hp', location='json')
         args = parser.parse_args()
 
-        qry.nama = args['nama']
-        qry.email = args['email']
-        qry.alamat = args['alamat']
-        qry.no_hp = args['no_hp']
+        if args['nama'] is not None:
+            qry.nama = args['nama']
+            
+        if args['email'] is not None:
+            qry.email = args['email']
+            
+        if args['alamat'] is not None:
+            qry.alamat = args['alamat']
+            
+        if args['no_hp'] is not None:
+            qry.no_hp = args['no_hp']
+            
         db.session.commit()
 
         app.logger.debug('DEBUG : %s', qry)
@@ -69,7 +78,7 @@ class BuyerResource(Resource):
         return marshal(qry, Buyers.response_fields), 200, {'Content-Type': 'application/json'}
 
 
-class BuyerList(Resource):
+class BuyerAdmin(Resource):
 
     @admin_required
     def delete(self, id):
@@ -117,5 +126,5 @@ class BuyerList(Resource):
         return rows, 200
 
 
-api.add_resource(BuyerList, '/admin/<id>', '/admin')
-api.add_resource(BuyerResource, '', '/user')
+api.add_resource(BuyerAdmin, '/admin', '/admin/<id>')
+api.add_resource(Buyer, '', '')

@@ -19,29 +19,26 @@ class Users(db.Model):
     status_internal = db.Column(db.Boolean, nullable=False)
     status_penjual = db.Column(db.Boolean, nullable=False, default=False)
     status_admin = db.Column(db.Boolean, nullable=False, default=False)
-    buyers = db.relationship('Buyers', backref='users',
-                             lazy=True, uselist=False)
-    sellers = db.relationship(
-        'Sellers', backref='users', lazy=True, uselist=False)
-    created_at = db.Column(db.DateTime(timezone=True),
-                           server_default=func.now())
+    buyers = db.relationship('Buyers', backref='users',lazy=True, uselist=False)
+    sellers = db.relationship('Sellers', backref='users', lazy=True, uselist=False)
+    created_at = db.Column(db.DateTime(timezone=True),server_default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 
     response_fields = {
         'id': fields.Integer,
         'username': fields.String,
         'password': fields.String,
-        'status_internal': fields.String,
-        'status_penjual': fields.String,
-        'status_admin': fields.String
+        'status_internal': fields.Boolean,
+        'status_penjual': fields.Boolean,
+        'status_admin': fields.Boolean
     }
 
     jwt_client_fields = {
         'id': fields.Integer,
         'username': fields.String,
-        'status_internal': fields.String,
-        'status_penjual': fields.String,
-        'status_admin': fields.String,
+        'status_internal': fields.Boolean,
+        'status_penjual': fields.Boolean,
+        'status_admin': fields.Boolean,
     }
 
     def __init__(self, username, password, salt, status_internal, status_penjual, status_admin):

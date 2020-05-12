@@ -1,7 +1,7 @@
 from flask import Blueprint
 from flask_restful import Resource, Api, reqparse, marshal, inputs
 from flask_jwt_extended import get_jwt_claims, jwt_required
-import json
+import json, werkzeug, os, uuid
 from .model import Products
 from blueprints.kategori_produk.model import ProductCategories
 from blueprints.penjual.model import Sellers
@@ -11,25 +11,36 @@ from sqlalchemy import desc
 bp_product = Blueprint('product', __name__)
 api = Api(bp_product)
 
-
 class ProductSeller(Resource):
-
     @penjual_required
-    @jwt_required
     def post(self):
         parser = reqparse.RequestParser()
-        parser.add_argument('nama', location='json', required=True)
-        parser.add_argument('harga', location='json', required=True)
-        parser.add_argument('stok', location='json', required=True)
-        parser.add_argument('berat', location='json', required=True)
-        parser.add_argument('deskripsi', location='json')
-        parser.add_argument('gambar', location='json', required=True)
-        parser.add_argument('kategori', location='json')
+        parser.add_argument('nama', location='form', required=True)
+        parser.add_argument('harga', location='form', required=True)
+        parser.add_argument('stok', location='form')
+        parser.add_argument('berat', location='form', required=True)
+        parser.add_argument('deskripsi', location='form')
+        parser.add_argument('gambar', type=werkzeug.datastructures.FileStorage, location='files', required=True)
+        parser.add_argument('kategori', location='form')
         args = parser.parse_args()
+        
+        UPLOAD_FOLDER = './storage/uploads'
+        if args['gambar'] == "":
+            return {'data':'', 'message':'No file found', 'status':'error'}, 500
+
+        image_produk = args['gambar']
+
+        if image_produk:
+            randomstr = uuid.uuid4().hex #get randum string to image filename
+            filename = randomstr+'_'+image_produk.filename
+            image_produk.save(os.path.join(UPLOAD_FOLDER,filename))
+            img_path = UPLOAD_FOLDER.replace('./', '/')+'/'+filename
+            
+        else :
+            return {'data':'', 'message':'Something when wrong', 'status':'error'}, 500
 
         # get id dari product type yang kita input
-        product_type = ProductCategories.query.filter_by(
-            tipe_produk=args['kategori'])
+        product_type = ProductCategories.query.filter_by(tipe_produk=args['kategori']).first()
         if product_type is None:
             app.logger.debug('DEBUG : kategori tidak ada')
             return {'message': 'kategori tidak ditemukan'}, 404
@@ -38,24 +49,20 @@ class ProductSeller(Resource):
         claims = get_jwt_claims()
         seller = Sellers.query.filter_by(user_id=claims['id']).first()
 
-        product = Products(args['nama'], args['harga'], args['stok'],
-                           args['berat'], args['deskripsi'], args['gambar'], product_type.id, seller.id)
+        product = Products(args['nama'],
+                           args['harga'],
+                           args['stok'],
+                           args['berat'],
+                           args['deskripsi'],
+                           img_path,
+                           product_type.id,
+                           seller.id)
         db.session.add(product)
         db.session.commit()
 
         app.logger.debug('DEBUG : %s', product)
 
         return marshal(product, Products.response_fields), 200, {'Content-Type': 'application/json'}
-
-    # @penjual_required
-    def get(self, id):
-        qry = Products.query.get(id)
-        if qry is not None:
-            app.logger.debug('DEBUG : %s', qry)
-            return marshal(qry, Products.response_fields), 200
-
-        app.logger.debug('DEBUG : id tidak ada')
-        return {'status': 'NOT_FOUND'}, 404
 
     @penjual_required
     def patch(self, id):
@@ -65,37 +72,47 @@ class ProductSeller(Resource):
             return {'status': 'NOT_FOUND'}, 404
 
         parser = reqparse.RequestParser()
-        parser.add_argument('nama', location='json')
-        parser.add_argument('harga', location='json')
-        parser.add_argument('stok', location='json')
-        parser.add_argument('berat', location='json')
-        parser.add_argument('deskripsi', location='json')
-        parser.add_argument('gambar', location='json')
-        parser.add_argument('kategori', location='json')
+        parser.add_argument('nama', location='form')
+        parser.add_argument('harga', location='form')
+        parser.add_argument('stok', location='form')
+        parser.add_argument('berat', location='form')
+        parser.add_argument('deskripsi', location='form')
+        parser.add_argument('gambar', type=werkzeug.datastructures.FileStorage, location='files')
+        parser.add_argument('kategori', location='form')
         args = parser.parse_args()
-
-        # get id dari product type yang kita input
-        product_type = ProductCategories.query.filter_by(
-            tipe_produk=args['kategori'])
-        if product_type is None:
-            app.logger.debug('DEBUG : kategori tidak ada')
-            return {'message': 'kategori tidak ditemukan'}, 404
 
         if args['nama'] is not None:
             qry.nama = args['nama']
+            
         if args['harga'] is not None:
             qry.harga = args['harga']
+            
         if args['stok'] is not None:
             qry.stok = args['stok']
+            
         if args['berat'] is not None:
             qry.berat = args['berat']
+            
         if args['deskripsi'] is not None:
             qry.deskripsi = args['deskripsi']
+            
         if args['gambar'] is not None:
-            qry.gambar = args['gambar']
-        if product_type is not None:
-            qry.product_type_id = product_type.id
+            UPLOAD_FOLDER = './storage/uploads'
 
+            image_produk = args['gambar']
+
+            if image_produk:
+                randomstr = uuid.uuid4().hex #get randum string to image filename
+                filename = randomstr+'_'+image_produk.filename
+                image_produk.save(os.path.join(UPLOAD_FOLDER,filename))
+                img_path = UPLOAD_FOLDER.replace('./', '/')+'/'+filename
+            qry.gambar = img_path
+            
+        if args['kategori'] is not None:
+            # get id dari product type yang kita input
+            product_type = ProductCategories.query.filter_by(tipe_produk=args['kategori']).first()
+            qry.product_type_id = product_type.id
+    
         db.session.commit()
 
         app.logger.debug('DEBUG : %s', qry)
@@ -103,7 +120,6 @@ class ProductSeller(Resource):
         return marshal(qry, Products.response_fields), 200, {'Content-Type': 'application/json'}
 
     @penjual_required
-    @admin_required
     def delete(self, id):
         qry = Products.query.get(id)
         if qry is None:
@@ -116,11 +132,18 @@ class ProductSeller(Resource):
         app.logger.debug('DEBUG : data telah terhapus')
 
         return {'status': 'DELETED'}, 200
+    
+class ProductUser(Resource):
+    def get(self, id):
+        qry = Products.query.get(id)
+        if qry is not None:
+            app.logger.debug('DEBUG : %s', qry)
+            return marshal(qry, Products.response_fields), 200
 
-
-class ProductList(Resource):
-
-    # @internal_required
+        app.logger.debug('DEBUG : id tidak ada')
+        return {'status': 'ID produk tidak ditemukan'}, 404
+    
+class ProductUserAll(Resource):
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('p', type=int, location='args', default=1)
@@ -151,6 +174,22 @@ class ProductList(Resource):
 
         return rows, 200
 
+class ProductAdmin(Resource):
+    @admin_required
+    def delete(self, id):
+        qry = Products.query.get(id)
+        if qry is None:
+            app.logger.debug('DEBUG : id tidak ada')
+            return {'status': 'NOT_FOUND'}, 404
 
-api.add_resource(ProductList, '', '/list')
-api.add_resource(ProductSeller, '', '/<id>')
+        db.session.delete(qry)
+        db.session.commit()
+
+        app.logger.debug('DEBUG : data telah terhapus')
+
+        return {'status': 'DELETED'}, 200
+    
+api.add_resource(ProductSeller, '/penjual', '/penjual/<id>')
+api.add_resource(ProductUser, '/<id>', '/<id>')
+api.add_resource(ProductUserAll, '', '')
+api.add_resource(ProductAdmin, '/admin/<id>', '/admin/<id>')
