@@ -11,7 +11,7 @@ from flask_script import Manager
 from flask_sqlalchemy import SQLAlchemy
 
 ###############################################################
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/storage')
 
 CORS(app, origins="*", allow_headers=[
     "Content-Type", "Authorization", "Access-Control-Allow-Credentials"],

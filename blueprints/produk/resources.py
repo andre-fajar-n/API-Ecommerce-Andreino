@@ -1,7 +1,10 @@
 from flask import Blueprint
 from flask_restful import Resource, Api, reqparse, marshal, inputs
 from flask_jwt_extended import get_jwt_claims, jwt_required
-import json, werkzeug, os, uuid
+import json
+import werkzeug
+import os
+import uuid
 from .model import Products
 from blueprints.kategori_produk.model import ProductCategories
 from blueprints.penjual.model import Sellers
@@ -11,10 +14,11 @@ from sqlalchemy import desc
 bp_product = Blueprint('product', __name__)
 api = Api(bp_product)
 
+
 class ProductSeller(Resource):
     def options(self):
         return {'status': 'ok'}, 200
-    
+
     @penjual_required
     def post(self):
         parser = reqparse.RequestParser()
@@ -26,24 +30,26 @@ class ProductSeller(Resource):
         parser.add_argument('gambar', type=werkzeug.datastructures.FileStorage, location='files', required=True)
         parser.add_argument('kategori', location='form')
         args = parser.parse_args()
-        
+
         UPLOAD_FOLDER = './storage/uploads'
         if args['gambar'] == "":
-            return {'data':'', 'message':'No file found', 'status':'error'}, 500
+            return {'data': '', 'message': 'No file found', 'status': 'error'}, 500
 
         image_produk = args['gambar']
 
         if image_produk:
-            randomstr = uuid.uuid4().hex #get randum string to image filename
+            randomstr = uuid.uuid4().hex  # get randum string to image filename
             filename = randomstr+'_'+image_produk.filename
-            image_produk.save(os.path.join(UPLOAD_FOLDER,filename))
-            img_path = UPLOAD_FOLDER.replace('./', '/')+'/'+filename
-            
-        else :
-            return {'data':'', 'message':'Something when wrong', 'status':'error'}, 500
+            image_produk.save(os.path.join(UPLOAD_FOLDER, filename))
+            img_path = "home/alta6/Documents/Portfolio-E-Commerce" + \
+                UPLOAD_FOLDER.replace('./', '/')+'/'+filename
+
+        else:
+            return {'data': '', 'message': 'Something when wrong', 'status': 'error'}, 500
 
         # get id dari product type yang kita input
-        product_type = ProductCategories.query.filter_by(tipe_produk=args['kategori']).first()
+        product_type = ProductCategories.query.filter_by(
+            tipe_produk=args['kategori']).first()
         if product_type is None:
             app.logger.debug('DEBUG : kategori tidak ada')
             return {'message': 'kategori tidak ditemukan'}, 404
@@ -80,42 +86,43 @@ class ProductSeller(Resource):
         parser.add_argument('stok', location='form')
         parser.add_argument('berat', location='form')
         parser.add_argument('deskripsi', location='form')
-        parser.add_argument('gambar', type=werkzeug.datastructures.FileStorage, location='files')
+        parser.add_argument(
+            'gambar', type=werkzeug.datastructures.FileStorage, location='files')
         parser.add_argument('kategori', location='form')
         args = parser.parse_args()
 
         if args['nama'] is not None:
             qry.nama = args['nama']
-            
+
         if args['harga'] is not None:
             qry.harga = args['harga']
-            
+
         if args['stok'] is not None:
             qry.stok = args['stok']
-            
+
         if args['berat'] is not None:
             qry.berat = args['berat']
-            
+
         if args['deskripsi'] is not None:
             qry.deskripsi = args['deskripsi']
-            
+
         if args['gambar'] is not None:
             UPLOAD_FOLDER = './storage/uploads'
 
             image_produk = args['gambar']
 
             if image_produk:
-                randomstr = uuid.uuid4().hex #get randum string to image filename
+                randomstr = uuid.uuid4().hex  # get randum string to image filename
                 filename = randomstr+'_'+image_produk.filename
-                image_produk.save(os.path.join(UPLOAD_FOLDER,filename))
+                image_produk.save(os.path.join(UPLOAD_FOLDER, filename))
                 img_path = UPLOAD_FOLDER.replace('./', '/')+'/'+filename
             qry.gambar = img_path
-            
+
         if args['kategori'] is not None:
             # get id dari product type yang kita input
             product_type = ProductCategories.query.filter_by(tipe_produk=args['kategori']).first()
             qry.product_type_id = product_type.id
-    
+
         db.session.commit()
 
         app.logger.debug('DEBUG : %s', qry)
@@ -135,11 +142,12 @@ class ProductSeller(Resource):
         app.logger.debug('DEBUG : data telah terhapus')
 
         return {'status': 'DELETED'}, 200
-    
+
+
 class ProductUser(Resource):
     def options(self):
         return {'status': 'ok'}, 200
-    
+
     def get(self, id):
         qry = Products.query.get(id)
         if qry is not None:
@@ -148,11 +156,12 @@ class ProductUser(Resource):
 
         app.logger.debug('DEBUG : id tidak ada')
         return {'status': 'ID produk tidak ditemukan'}, 404
-    
+
+
 class ProductUserAll(Resource):
     def options(self):
         return {'status': 'ok'}, 200
-    
+
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('p', type=int, location='args', default=1)
@@ -183,10 +192,11 @@ class ProductUserAll(Resource):
 
         return rows, 200
 
+
 class ProductAdmin(Resource):
     def options(self):
         return {'status': 'ok'}, 200
-    
+
     @admin_required
     def delete(self, id):
         qry = Products.query.get(id)
@@ -200,7 +210,8 @@ class ProductAdmin(Resource):
         app.logger.debug('DEBUG : data telah terhapus')
 
         return {'status': 'DELETED'}, 200
-    
+
+
 api.add_resource(ProductSeller, '/penjual', '/penjual/<id>')
 api.add_resource(ProductUser, '/<id>')
 api.add_resource(ProductUserAll, '')
