@@ -5,13 +5,13 @@ import os
 from functools import wraps
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, get_jwt_claims, verify_jwt_in_request
-from flask import Flask, request
+from flask import Flask, request, send_from_directory
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
 from flask_sqlalchemy import SQLAlchemy
 
 ###############################################################
-app = Flask(__name__, static_url_path='/storage')
+app = Flask(__name__)
 
 CORS(app, origins="*", allow_headers=[
     "Content-Type", "Authorization", "Access-Control-Allow-Credentials"],
@@ -69,6 +69,12 @@ migrate = Migrate(app, db)
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
 
+@app.before_request
+def before_request():
+    ## disini aku cek kalau routenya img, langsung aja di balikin file jpgnya. jadi waktu respon kalian langsung aja pake /img/.......jpg
+    filename = request.path.split('/')
+    if request.method == "GET" and filename[1] == "img" : 
+        return send_from_directory(".."+app.config['UPLOAD_FOLDER'], filename[2]), 200
 
 # log handler
 @app.after_request
@@ -77,28 +83,32 @@ def after_request(response):
         requestData = request.get_json()
     except Exception as e:
         requestData = request.args.to_dict()
-    if response.status_code == 200:
-        app.logger.info("REQUEST_LOG\t%s",
-                        json.dumps({
-                            'status_code': response.status_code,
-                            'method': request.method,
-                            'code': response.status,
-                            'uri': request.full_path,
-                            'request': requestData,
-                            'response': json.loads(response.data.decode('utf-8'))
-                        })
-                        )
-    else:
-        app.logger.error("REQUEST_LOG\t%s",
-                         json.dumps({
-                             'status_code': response.status_code,
-                             'method': request.method,
-                             'code': response.status,
-                             'uri': request.full_path,
-                             'request': requestData,
-                             'response': json.loads(response.data.decode('utf-8'))
-                         })
-                         )
+    ## dipake jadi trycatch soalnya response iamge ga bisa di decode json
+    try : 
+        if response.status_code == 200:
+            app.logger.info("REQUEST_LOG\t%s",
+                            json.dumps({
+                                'status_code': response.status_code,
+                                'method': request.method,
+                                'code': response.status,
+                                'uri': request.full_path,
+                                'request': requestData,
+                                'response': json.loads(response.data.decode('utf-8'))
+                            })
+                            )
+        else:
+            app.logger.error("REQUEST_LOG\t%s",
+                            json.dumps({
+                                'status_code': response.status_code,
+                                'method': request.method,
+                                'code': response.status,
+                                'uri': request.full_path,
+                                'request': requestData,
+                                'response': json.loads(response.data.decode('utf-8'))
+                            })
+                            )
+    except Exception as e:
+        pass
     return response
 
 

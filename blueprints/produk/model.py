@@ -21,10 +21,8 @@ class Products(db.Model):
     gambar = db.Column(db.String(255), default="")
     product_type_id = db.Column(db.Integer, db.ForeignKey('product_types.id'))
     seller_id = db.Column(db.Integer, db.ForeignKey('sellers.id'))
-    products = db.relationship(
-        'TransactionDetails', backref='products', lazy=True, uselist=False)
-    created_at = db.Column(db.DateTime(timezone=True),
-                           server_default=func.now())
+    products = db.relationship('TransactionDetails', backref='products', lazy=True, uselist=False)
+    created_at = db.Column(db.DateTime(timezone=True),server_default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 
     response_fields = {
@@ -37,6 +35,8 @@ class Products(db.Model):
         'gambar': fields.String,
         'product_type_id': fields.Integer,
         'seller_id': fields.Integer,
+        'created_at':fields.DateTime,
+        'updated_at':fields.DateTime,
     }
 
     def __init__(self, nama, harga, stok, berat, deskripsi, gambar, product_type_id, seller_id):

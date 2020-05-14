@@ -19,6 +19,7 @@ class Config():
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=1)
     JWT_SECRET_KEY = cfg['jwt']['secret_key']
+    UPLOAD_FOLDER = '/storage/uploads'
 
 
 class DevelopmentConfig(Config):
