@@ -18,10 +18,8 @@ class Sellers(db.Model):
     alamat = db.Column(db.String(255))
     no_hp = db.Column(db.String(15))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    products = db.relationship(
-        'Products', backref='sellers', lazy=True, uselist=False)
-    created_at = db.Column(db.DateTime(timezone=True),
-                           server_default=func.now())
+    products = db.relationship('Products', backref='sellers', lazy=True, uselist=False)
+    created_at = db.Column(db.DateTime(timezone=True),server_default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 
     response_fields = {

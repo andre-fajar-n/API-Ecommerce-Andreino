@@ -27,8 +27,7 @@ class ProductSeller(Resource):
         parser.add_argument('stok', location='form')
         parser.add_argument('berat', location='form', required=True)
         parser.add_argument('deskripsi', location='form')
-        parser.add_argument(
-            'gambar', type=werkzeug.datastructures.FileStorage, location='files', required=True)
+        parser.add_argument('gambar', type=werkzeug.datastructures.FileStorage, location='files', required=True)
         parser.add_argument('kategori', location='form')
         args = parser.parse_args()
 
@@ -41,16 +40,14 @@ class ProductSeller(Resource):
         if image_produk:
             randomstr = uuid.uuid4().hex  # get randum string to image filename
             filename = randomstr+'_'+image_produk.filename
-            image_produk.save(os.path.join(UPLOAD_FOLDER, filename))
-            img_path = "home/alta6/Documents/Portfolio-E-Commerce" + \
-                UPLOAD_FOLDER.replace('./', '/')+'/'+filename
+            image_produk.save(os.path.join("."+UPLOAD_FOLDER, filename))
+            img_path = UPLOAD_FOLDER.replace('./', '/')+'/'+filename
 
         else:
             return {'data': '', 'message': 'Something when wrong', 'status': 'error'}, 500
 
         # get id dari product type yang kita input
-        product_type = ProductCategories.query.filter_by(
-            tipe_produk=args['kategori']).first()
+        product_type = ProductCategories.query.filter_by(tipe_produk=args['kategori']).first()
         if product_type is None:
             app.logger.debug('DEBUG : kategori tidak ada')
             return {'message': 'kategori tidak ditemukan'}, 404
@@ -64,7 +61,7 @@ class ProductSeller(Resource):
                            args['stok'],
                            args['berat'],
                            args['deskripsi'],
-                           img_path,
+                           filename,
                            product_type.id,
                            seller.id)
         db.session.add(product)
@@ -87,8 +84,7 @@ class ProductSeller(Resource):
         parser.add_argument('stok', location='form')
         parser.add_argument('berat', location='form')
         parser.add_argument('deskripsi', location='form')
-        parser.add_argument(
-            'gambar', type=werkzeug.datastructures.FileStorage, location='files')
+        parser.add_argument('gambar', type=werkzeug.datastructures.FileStorage, location='files')
         parser.add_argument('kategori', location='form')
         args = parser.parse_args()
 
@@ -121,9 +117,10 @@ class ProductSeller(Resource):
 
         if args['kategori'] is not None:
             # get id dari product type yang kita input
-            product_type = ProductCategories.query.filter_by(
-                tipe_produk=args['kategori']).first()
-            qry.product_type_id = product_type.id
+            product_type = ProductCategories.query.filter_by(tipe_produk=args['kategori']).first()
+            if product_type is None:
+                app.logger.debug('DEBUG : kategori tidak ada')
+                return {'message': 'kategori tidak ditemukan'}, 404
 
         db.session.commit()
 
@@ -168,20 +165,15 @@ class ProductUserAll(Resource):
         parser = reqparse.RequestParser()
         parser.add_argument('p', type=int, location='args', default=1)
         parser.add_argument('rp', type=int, location='args', default=25)
-        parser.add_argument('orderby', location='args',
-                            help='invalid orderby value', choices=('nama'))
-        parser.add_argument('sort', location='args',
-                            help='invalid sort value', choices=('desc', 'asc'))
-        parser.add_argument('kategori', location='args')
+        parser.add_argument('orderby', location='args',help='invalid orderby value', choices=('nama'))
+        parser.add_argument('sort', location='args',help='invalid sort value', choices=('desc', 'asc'))
         args = parser.parse_args()
 
         offset = (args['p'] * args['rp'] - args['rp'])
 
         qry = Products.query
+        qry = qry.order_by(desc(Products.created_at))
         qry = qry.order_by(desc(Products.updated_at))
-
-        if args['kategori'] is not None:
-            qry = qry.filter_by(product_type_id=args['kategori'])
 
         if args['orderby'] is not None:
             if args['orderby'] == 'nama':
@@ -192,7 +184,11 @@ class ProductUserAll(Resource):
 
         rows = []
         for row in qry.limit(args['rp']).offset(offset).all():
-            rows.append(marshal(row, Products.response_fields))
+            marshal_row = marshal(row, Products.response_fields)
+            seller = Sellers.query.get(row.seller_id)
+            marshal_seller = marshal(seller, Sellers.response_fields)
+            marshal_row['seller'] = marshal_seller
+            rows.append(marshal_row)
 
         app.logger.debug('DEBUG : %s', rows)
 

@@ -16,12 +16,11 @@ class Carts(db.Model):
     total_harga = db.Column(db.Integer, default=0)
     total_kuantitas = db.Column(db.Integer, default=0)
     ongkir = db.Column(db.Integer, default=0)
+    # status_checkout = db.Column(db.Boolean, default=False)
     seller_id = db.Column(db.Integer, db.ForeignKey('sellers.id'))
     buyer_id = db.Column(db.Integer, db.ForeignKey('buyers.id'))
-    products = db.relationship(
-        'TransactionDetails', backref='carts', lazy=True, uselist=False)
-    created_at = db.Column(db.DateTime(timezone=True),
-                           server_default=func.now())
+    products = db.relationship('TransactionDetails', backref='carts', lazy=True, uselist=False)
+    created_at = db.Column(db.DateTime(timezone=True),server_default=func.now())
     updated_at = db.Column(db.DateTime(timezone=True), onupdate=func.now())
 
     response_fields = {

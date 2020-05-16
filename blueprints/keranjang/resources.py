@@ -27,7 +27,6 @@ class CartsResource(Resource):
             return {'status': 'NOT_FOUND', 'message': 'pembeli tidak ada'}, 404
 
         cart = Carts.query.filter_by(buyer_id=buyer.id)
-        # cart = cart.all()
         result = []
         for qry in cart:
             seller = Sellers.query.filter_by(id=qry.seller_id).first()
@@ -66,52 +65,64 @@ class CartsResource(Resource):
         buyer = Buyers.query.filter_by(user_id=claims['id']).first()
         cart = Carts.query.filter_by(buyer_id=buyer.id)
         cart = cart.filter_by(seller_id=product.seller_id).first()
+        
         if cart is None:
             cart = Carts(product.seller_id, buyer.id)
             db.session.add(cart)
             db.session.commit()
-            # transaction_detail = TransactionDetails(int(product.harga) * int(args['quantity']),
-            #                                         args['quantity'],
-            #                                         cart.id,
-            #                                         args['product_id'])
-            # db.session.add(transaction_detail)
-            # db.session.commit()
-        # else:
-        #     transaction_detail = TransactionDetails.query.filter_by(cart_id=cart.id, product_id=args['product_id'])
-        #     # transaction_detail = transaction_detail.filter_by(product_id=args['product_id']).first()
-        #     transaction_detail.kuantitas = args['quantity']
-        #     transaction_detail.harga = product.harga * args['quantity']
-        #     db.session.commit()
-
-        td = TransactionDetails(
-            product.harga, args['quantity'], cart.id, args['product_id'])
-        db.session.add(td)
+            
+        transactionDetail = TransactionDetails.query.filter_by(cart_id=cart.id)
+        if transactionDetail is None:
+            transactionDetail = TransactionDetails(product.harga, args['quantity'], cart.id, args['product_id'])
+            db.session.add(transactionDetail)
+            db.session.commit()
+        else:
+            transactionDetail = transactionDetail.filter_by(product_id=args['product_id']).first()
+            if transactionDetail is None:
+                transactionDetail = TransactionDetails(product.harga*args['quantity'], args['quantity'], cart.id, args['product_id'])
+                db.session.add(transactionDetail)
+                
+                update_total_kuantitas = args['quantity']
+                update_total_harga = args['quantity']*product.harga
+                db.session.commit()
+            else:
+                update_total_kuantitas = args['quantity'] - transactionDetail.kuantitas
+                update_total_harga = (args['quantity']*product.harga) - transactionDetail.harga
+                
+                transactionDetail.kuantitas = args['quantity']
+                transactionDetail.harga = args['quantity']*product.harga
+                db.session.commit()
+                
+        cart.total_kuantitas += update_total_kuantitas
+        cart.total_harga += update_total_harga
         db.session.commit()
-
-        cart.total_kuantitas += args['quantity']
-        cart.total_harga += int(product.harga)*int(args['quantity'])
-        db.session.commit()
-
-        # cart.total_kuantitas += int(transaction_detail.kuantitas)
-        # cart.total_harga += int(transaction_detail.harga)
-
-        # db.session.commit()
 
         app.logger.debug('DEBUG: sukses')
         return {'status': 'sukses'}, 200
 
-    # @internal_required
+    @internal_required
     def delete(self, id):
-        qry = Carts.query.get(id)
-        db.session.delete(qry)
+        claims = get_jwt_claims()
+        buyer = Buyers.query.filter_by(user_id=claims['id']).first()
+        if buyer is None:
+            app.logger.debug('DEBUG : pembeli tidak ada')
+            return {'status': 'NOT_FOUND', 'message': 'pembeli tidak ada'}, 404
+        cart = Carts.query.filter_by(buyer_id=buyer.id)
+        
+        transactionDetail = TransactionDetails.query.get(id)
+        cart = Carts.query.get(transactionDetail.cart_id)
+        
+        cart.total_kuantitas -= transactionDetail.kuantitas
+        cart.total_harga -= transactionDetail.harga
+        
+        if cart.total_kuantitas == 0:
+            db.session.delete(cart)
+        
+        db.session.delete(transactionDetail)
         db.session.commit()
 
         app.logger.debug('DEBUG : data telah terhapus')
 
         return {'status': 'DELETED'}, 200
-        # claims = get_jwt_claims()
-        # buyer = Buyers.query.filter_by(user_id=claims['id'])
-        # cart = Carts.query.filter_by(buyer_id=buyer.id).first()
-
 
 api.add_resource(CartsResource, '', '/<id>')
