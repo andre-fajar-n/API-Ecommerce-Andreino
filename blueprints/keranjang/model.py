@@ -16,7 +16,7 @@ class Carts(db.Model):
     total_harga = db.Column(db.Integer, default=0)
     total_kuantitas = db.Column(db.Integer, default=0)
     ongkir = db.Column(db.Integer, default=0)
-    # status_checkout = db.Column(db.Boolean, default=False)
+    status_checkout = db.Column(db.Boolean, default=False)
     seller_id = db.Column(db.Integer, db.ForeignKey('sellers.id'))
     buyer_id = db.Column(db.Integer, db.ForeignKey('buyers.id'))
     products = db.relationship('TransactionDetails', backref='carts', lazy=True, uselist=False)
@@ -30,6 +30,7 @@ class Carts(db.Model):
         'ongkir': fields.Integer,
         'seller_id': fields.Integer,
         'buyer_id': fields.Integer,
+        'status_checkout':fields.Boolean
     }
 
     def __init__(self, seller_id, buyer_id):

@@ -71,10 +71,16 @@ manager.add_command('db', MigrateCommand)
 
 @app.before_request
 def before_request():
-    ## disini aku cek kalau routenya img, langsung aja di balikin file jpgnya. jadi waktu respon kalian langsung aja pake /img/.......jpg
     filename = request.path.split('/')
     if request.method == "GET" and filename[1] == "img" : 
         return send_from_directory(".."+app.config['UPLOAD_FOLDER'], filename[2]), 200
+    
+@app.before_request
+def before_request():
+    if request.method != 'OPTIONS':  # <-- required
+        pass
+    else :
+        return {}, 200, {'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*', 'Access-Control-Allow-Methods':'*'}
 
 # log handler
 @app.after_request
@@ -120,6 +126,7 @@ from blueprints.penjual.resources import bp_seller
 from blueprints.produk.resources import bp_product
 from blueprints.token import bp_auth
 from blueprints.user.resources import bp_user
+from blueprints.checkout import bp_checkout
 
 # Register Blueprint
 app.register_blueprint(bp_product_categories, url_prefix='/kategori')
@@ -129,5 +136,6 @@ app.register_blueprint(bp_seller, url_prefix='/penjual')
 app.register_blueprint(bp_product, url_prefix='/produk')
 app.register_blueprint(bp_auth, url_prefix='/login')
 app.register_blueprint(bp_user, url_prefix='/user')
+app.register_blueprint(bp_checkout, url_prefix='/checkout')
 
 db.create_all()

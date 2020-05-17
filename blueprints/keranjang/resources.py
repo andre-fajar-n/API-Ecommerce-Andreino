@@ -27,6 +27,7 @@ class CartsResource(Resource):
             return {'status': 'NOT_FOUND', 'message': 'pembeli tidak ada'}, 404
 
         cart = Carts.query.filter_by(buyer_id=buyer.id)
+        cart = cart.filter_by(status_checkout=False)
         result = []
         for qry in cart:
             seller = Sellers.query.filter_by(id=qry.seller_id).first()
@@ -48,8 +49,8 @@ class CartsResource(Resource):
     @internal_required
     def post(self):
         parser = reqparse.RequestParser()
-        parser.add_argument('product_id', location='json', type=int)
-        parser.add_argument('quantity', location='json', type=int)
+        parser.add_argument('product_id', location='args', type=int)
+        parser.add_argument('quantity', location='args', type=int)
         args = parser.parse_args()
 
         # cek produk ada atau tidak
@@ -64,16 +65,17 @@ class CartsResource(Resource):
         claims = get_jwt_claims()
         buyer = Buyers.query.filter_by(user_id=claims['id']).first()
         cart = Carts.query.filter_by(buyer_id=buyer.id)
+        cart = cart.filter_by(status_checkout=False)
         cart = cart.filter_by(seller_id=product.seller_id).first()
-        
+
         if cart is None:
             cart = Carts(product.seller_id, buyer.id)
             db.session.add(cart)
             db.session.commit()
-            
+
         transactionDetail = TransactionDetails.query.filter_by(cart_id=cart.id)
         if transactionDetail is None:
-            transactionDetail = TransactionDetails(product.harga, args['quantity'], cart.id, args['product_id'])
+            transactionDetail = TransactionDetails(product.harga*args['quantity'], args['quantity'], cart.id, args['product_id'])
             db.session.add(transactionDetail)
             db.session.commit()
         else:
@@ -81,18 +83,18 @@ class CartsResource(Resource):
             if transactionDetail is None:
                 transactionDetail = TransactionDetails(product.harga*args['quantity'], args['quantity'], cart.id, args['product_id'])
                 db.session.add(transactionDetail)
-                
+
                 update_total_kuantitas = args['quantity']
                 update_total_harga = args['quantity']*product.harga
                 db.session.commit()
             else:
                 update_total_kuantitas = args['quantity'] - transactionDetail.kuantitas
                 update_total_harga = (args['quantity']*product.harga) - transactionDetail.harga
-                
+
                 transactionDetail.kuantitas = args['quantity']
                 transactionDetail.harga = args['quantity']*product.harga
                 db.session.commit()
-                
+
         cart.total_kuantitas += update_total_kuantitas
         cart.total_harga += update_total_harga
         db.session.commit()
@@ -108,21 +110,23 @@ class CartsResource(Resource):
             app.logger.debug('DEBUG : pembeli tidak ada')
             return {'status': 'NOT_FOUND', 'message': 'pembeli tidak ada'}, 404
         cart = Carts.query.filter_by(buyer_id=buyer.id)
-        
+        cart = cart.filter_by(status_checkout=False)
+
         transactionDetail = TransactionDetails.query.get(id)
         cart = Carts.query.get(transactionDetail.cart_id)
-        
+
         cart.total_kuantitas -= transactionDetail.kuantitas
         cart.total_harga -= transactionDetail.harga
-        
+
         if cart.total_kuantitas == 0:
             db.session.delete(cart)
-        
+
         db.session.delete(transactionDetail)
         db.session.commit()
 
         app.logger.debug('DEBUG : data telah terhapus')
 
         return {'status': 'DELETED'}, 200
+
 
 api.add_resource(CartsResource, '', '/<id>')
