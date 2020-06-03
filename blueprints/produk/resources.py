@@ -27,7 +27,8 @@ class ProductSeller(Resource):
         parser.add_argument('stok', location='form')
         parser.add_argument('berat', location='form', required=True)
         parser.add_argument('deskripsi', location='form')
-        parser.add_argument('gambar', type=werkzeug.datastructures.FileStorage, location='files', required=True)
+        parser.add_argument(
+            'gambar', type=werkzeug.datastructures.FileStorage, location='files')
         parser.add_argument('kategori', location='form')
         args = parser.parse_args()
 
@@ -47,7 +48,8 @@ class ProductSeller(Resource):
             return {'data': '', 'message': 'Something when wrong', 'status': 'error'}, 500
 
         # get id dari product type yang kita input
-        product_type = ProductCategories.query.filter_by(tipe_produk=args['kategori']).first()
+        product_type = ProductCategories.query.filter_by(
+            tipe_produk=args['kategori']).first()
         if product_type is None:
             app.logger.debug('DEBUG : kategori tidak ada')
             return {'message': 'kategori tidak ditemukan'}, 404
@@ -84,7 +86,8 @@ class ProductSeller(Resource):
         parser.add_argument('stok', location='form')
         parser.add_argument('berat', location='form')
         parser.add_argument('deskripsi', location='form')
-        parser.add_argument('gambar', type=werkzeug.datastructures.FileStorage, location='files')
+        parser.add_argument(
+            'gambar', type=werkzeug.datastructures.FileStorage, location='files')
         parser.add_argument('kategori', location='form')
         args = parser.parse_args()
 
@@ -117,7 +120,8 @@ class ProductSeller(Resource):
 
         if args['kategori'] is not None:
             # get id dari product type yang kita input
-            product_type = ProductCategories.query.filter_by(tipe_produk=args['kategori']).first()
+            product_type = ProductCategories.query.filter_by(
+                tipe_produk=args['kategori']).first()
             if product_type is None:
                 app.logger.debug('DEBUG : kategori tidak ada')
                 return {'message': 'kategori tidak ditemukan'}, 404
@@ -165,8 +169,10 @@ class ProductUserAll(Resource):
         parser = reqparse.RequestParser()
         parser.add_argument('p', type=int, location='args', default=1)
         parser.add_argument('rp', type=int, location='args', default=25)
-        parser.add_argument('orderby', location='args',help='invalid orderby value', choices=('nama'))
-        parser.add_argument('sort', location='args',help='invalid sort value', choices=('desc', 'asc'))
+        parser.add_argument('orderby', location='args',
+                            help='invalid orderby value', choices=('nama'))
+        parser.add_argument('sort', location='args',
+                            help='invalid sort value', choices=('desc', 'asc'))
         args = parser.parse_args()
 
         offset = (args['p'] * args['rp'] - args['rp'])

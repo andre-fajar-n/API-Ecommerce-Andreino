@@ -8,7 +8,7 @@ migrations/
 config.cfg
 *.cfg
 *.json
-storage/
+storage/log
 
 # tambah
 

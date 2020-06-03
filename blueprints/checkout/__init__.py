@@ -3,10 +3,7 @@ from flask_restful import Resource, Api, reqparse, marshal, inputs
 from flask_jwt_extended import get_jwt_claims, jwt_required
 import json
 from blueprints.keranjang.model import Carts
-from blueprints.detail_transaksi.model import TransactionDetails
 from blueprints.pembeli.model import Buyers
-from blueprints.produk.model import Products
-from blueprints.penjual.model import Sellers
 from blueprints import db, app, internal_required, penjual_required, admin_required
 from sqlalchemy import desc
 
@@ -28,6 +25,6 @@ class Checkout(Resource):
             qry.status_checkout = True
             db.session.commit()
             
-        return marshal(cart, Carts.response_fields), 200
+        return {'status': 'success'}, 200
     
 api.add_resource(Checkout, '')
