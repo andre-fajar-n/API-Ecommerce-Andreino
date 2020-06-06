@@ -18,13 +18,14 @@ class Buyer(Resource):
     def post(self):
         claims = get_jwt_claims()
         parser = reqparse.RequestParser()
-        parser.add_argument('nama', location='json', required=True)
-        parser.add_argument('email', location='json', required=True)
-        parser.add_argument('alamat', location='json', required=True)
-        parser.add_argument('no_hp', location='json', required=True)
+        parser.add_argument('nama', location='json', default="")
+        parser.add_argument('email', location='json', default="")
+        parser.add_argument('alamat', location='json', default="")
+        parser.add_argument('no_hp', location='json', default="")
         args = parser.parse_args()
 
-        buyer = Buyers(args['nama'], args['email'],args['alamat'], args['no_hp'], claims['id'])
+        buyer = Buyers(args['nama'], args['email'],
+                       args['alamat'], args['no_hp'], claims['id'])
         db.session.add(buyer)
         db.session.commit()
 
@@ -60,16 +61,16 @@ class Buyer(Resource):
 
         if args['nama'] is not None:
             qry.nama = args['nama']
-            
+
         if args['email'] is not None:
             qry.email = args['email']
-            
+
         if args['alamat'] is not None:
             qry.alamat = args['alamat']
-            
+
         if args['no_hp'] is not None:
             qry.no_hp = args['no_hp']
-            
+
         db.session.commit()
 
         app.logger.debug('DEBUG : %s', qry)
