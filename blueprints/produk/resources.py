@@ -239,7 +239,7 @@ class ProductSeller(Resource):
 #         return {'status': 'DELETED'}, 200
 
 
-api.add_resource(ProductSeller, '/penjual', '/penjual/<id>')
+api.add_resource(ProductSeller, '', '/penjual', '/penjual/<id>')
 # api.add_resource(ProductUser, '/<id>')
 # api.add_resource(ProductUserAll, '')
 # api.add_resource(ProductAdmin, '/admin/<id>')
