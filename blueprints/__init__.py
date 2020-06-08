@@ -13,9 +13,9 @@ from flask_sqlalchemy import SQLAlchemy
 ###############################################################
 app = Flask(__name__)
 
-@app.route("/")
-def hello():
-    return {'pesan': 'masuk'}, 200
+# @app.route("/")
+# def hello():
+#     return {'pesan': 'masuk'}, 200
 
 CORS(app, origins="*", allow_headers=[
     "Content-Type", "Authorization", "Access-Control-Allow-Credentials"],
@@ -34,7 +34,6 @@ def internal_required(fn):
         else:
             return fn(*args, **kwargs)
     return wrapper
-
 
 def penjual_required(fn):
     @wraps(fn)
