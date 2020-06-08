@@ -30,7 +30,9 @@ class Carts(db.Model):
         'ongkir': fields.Integer,
         'seller_id': fields.Integer,
         'buyer_id': fields.Integer,
-        'status_checkout':fields.Boolean
+        'status_checkout':fields.Boolean,
+        'updated_at': fields.DateTime,
+        'created_at': fields.DateTime,
     }
 
     def __init__(self, seller_id, buyer_id):

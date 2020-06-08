@@ -131,6 +131,7 @@ from blueprints.produk.resources import bp_product
 from blueprints.token import bp_auth
 from blueprints.user.resources import bp_user
 from blueprints.checkout import bp_checkout
+from blueprints.history.resources import bp_history
 
 # Register Blueprint
 app.register_blueprint(bp_product_categories, url_prefix='/kategori')
@@ -141,5 +142,6 @@ app.register_blueprint(bp_product, url_prefix='/produk')
 app.register_blueprint(bp_auth, url_prefix='/login')
 app.register_blueprint(bp_user, url_prefix='/user')
 app.register_blueprint(bp_checkout, url_prefix='/checkout')
+app.register_blueprint(bp_history, url_prefix="/history")
 
 db.create_all()
