@@ -13,6 +13,10 @@ from flask_sqlalchemy import SQLAlchemy
 ###############################################################
 app = Flask(__name__)
 
+@app.route("/")
+def hello():
+    return {'pesan': 'masuk'}, 200
+
 CORS(app, origins="*", allow_headers=[
     "Content-Type", "Authorization", "Access-Control-Allow-Credentials"],
     supports_credentials=True, intercept_exceptions=False)
