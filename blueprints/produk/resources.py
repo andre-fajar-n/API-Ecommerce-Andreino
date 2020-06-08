@@ -168,78 +168,78 @@ class ProductSeller(Resource):
 
     #     return rows, 200
 
-class ProductUser(Resource):
-    def options(self):
-        return {'status': 'ok'}, 200
+# class ProductUser(Resource):
+#     def options(self):
+#         return {'status': 'ok'}, 200
 
-    def get(self, id):
-        qry = Products.query.get(id)
-        if qry is not None:
-            app.logger.debug('DEBUG : %s', qry)
-            return marshal(qry, Products.response_fields), 200
+#     def get(self, id):
+#         qry = Products.query.get(id)
+#         if qry is not None:
+#             app.logger.debug('DEBUG : %s', qry)
+#             return marshal(qry, Products.response_fields), 200
 
-        app.logger.debug('DEBUG : id tidak ada')
-        return {'status': 'ID produk tidak ditemukan'}, 404
-
-
-class ProductUserAll(Resource):
-    def options(self):
-        return {'status': 'ok'}, 200
-
-    def get(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument('p', type=int, location='args', default=1)
-        parser.add_argument('rp', type=int, location='args', default=25)
-        parser.add_argument('orderby', location='args',help='invalid orderby value', choices=('nama'))
-        parser.add_argument('sort', location='args',help='invalid sort value', choices=('desc', 'asc'))
-        args = parser.parse_args()
-
-        offset = (args['p'] * args['rp'] - args['rp'])
-
-        qry = Products.query
-        qry = qry.order_by(desc(Products.created_at))
-        qry = qry.order_by(desc(Products.updated_at))
-
-        if args['orderby'] is not None:
-            if args['orderby'] == 'nama':
-                if args['sort'] == 'desc':
-                    qry = qry.order_by(desc(Products.id))
-                else:
-                    qry = qry.order_by(Products.id)
-
-        rows = []
-        for row in qry.limit(args['rp']).offset(offset).all():
-            marshal_row = marshal(row, Products.response_fields)
-            seller = Sellers.query.get(row.seller_id)
-            marshal_seller = marshal(seller, Sellers.response_fields)
-            marshal_row['seller'] = marshal_seller
-            rows.append(marshal_row)
-
-        app.logger.debug('DEBUG : %s', rows)
-
-        return rows, 200
+#         app.logger.debug('DEBUG : id tidak ada')
+#         return {'status': 'ID produk tidak ditemukan'}, 404
 
 
-class ProductAdmin(Resource):
-    def options(self):
-        return {'status': 'ok'}, 200
+# class ProductUserAll(Resource):
+#     def options(self):
+#         return {'status': 'ok'}, 200
 
-    @admin_required
-    def delete(self, id):
-        qry = Products.query.get(id)
-        if qry is None:
-            app.logger.debug('DEBUG : id tidak ada')
-            return {'status': 'NOT_FOUND'}, 404
+#     def get(self):
+#         parser = reqparse.RequestParser()
+#         parser.add_argument('p', type=int, location='args', default=1)
+#         parser.add_argument('rp', type=int, location='args', default=25)
+#         parser.add_argument('orderby', location='args',help='invalid orderby value', choices=('nama'))
+#         parser.add_argument('sort', location='args',help='invalid sort value', choices=('desc', 'asc'))
+#         args = parser.parse_args()
 
-        db.session.delete(qry)
-        db.session.commit()
+#         offset = (args['p'] * args['rp'] - args['rp'])
 
-        app.logger.debug('DEBUG : data telah terhapus')
+#         qry = Products.query
+#         qry = qry.order_by(desc(Products.created_at))
+#         qry = qry.order_by(desc(Products.updated_at))
 
-        return {'status': 'DELETED'}, 200
+#         if args['orderby'] is not None:
+#             if args['orderby'] == 'nama':
+#                 if args['sort'] == 'desc':
+#                     qry = qry.order_by(desc(Products.id))
+#                 else:
+#                     qry = qry.order_by(Products.id)
+
+#         rows = []
+#         for row in qry.limit(args['rp']).offset(offset).all():
+#             marshal_row = marshal(row, Products.response_fields)
+#             seller = Sellers.query.get(row.seller_id)
+#             marshal_seller = marshal(seller, Sellers.response_fields)
+#             marshal_row['seller'] = marshal_seller
+#             rows.append(marshal_row)
+
+#         app.logger.debug('DEBUG : %s', rows)
+
+#         return rows, 200
+
+
+# class ProductAdmin(Resource):
+#     def options(self):
+#         return {'status': 'ok'}, 200
+
+#     @admin_required
+#     def delete(self, id):
+#         qry = Products.query.get(id)
+#         if qry is None:
+#             app.logger.debug('DEBUG : id tidak ada')
+#             return {'status': 'NOT_FOUND'}, 404
+
+#         db.session.delete(qry)
+#         db.session.commit()
+
+#         app.logger.debug('DEBUG : data telah terhapus')
+
+#         return {'status': 'DELETED'}, 200
 
 
 api.add_resource(ProductSeller, '/penjual', '/penjual/<id>')
-api.add_resource(ProductUser, '/<id>')
-api.add_resource(ProductUserAll, '')
-api.add_resource(ProductAdmin, '/admin/<id>')
+# api.add_resource(ProductUser, '/<id>')
+# api.add_resource(ProductUserAll, '')
+# api.add_resource(ProductAdmin, '/admin/<id>')
