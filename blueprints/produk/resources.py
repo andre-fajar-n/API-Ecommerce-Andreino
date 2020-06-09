@@ -142,31 +142,31 @@ class ProductSeller(Resource):
 
         return {'status': 'DELETED'}, 200
     
-    # @penjual_required
-    # def get(self):
-    #     parser = reqparse.RequestParser()
-    #     parser.add_argument('p', type=int, location='args', default=1)
-    #     parser.add_argument('rp', type=int, location='args', default=25)
-    #     args = parser.parse_args()
+    @penjual_required
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('p', type=int, location='args', default=1)
+        parser.add_argument('rp', type=int, location='args', default=25)
+        args = parser.parse_args()
         
-    #     claims = get_jwt_claims()
+        claims = get_jwt_claims()
         
-    #     seller = Sellers.query.filter_by(user_id=claims['id']).first()
+        seller = Sellers.query.filter_by(user_id=claims['id']).first()
         
-    #     offset = (args['p'] * args['rp'] - args['rp'])
+        offset = (args['p'] * args['rp'] - args['rp'])
 
-    #     qry = Products.query.filter_by(seller_id=seller.id)
-    #     qry = qry.order_by(desc(Products.created_at))
-    #     qry = qry.order_by(desc(Products.updated_at))
+        qry = Products.query.filter_by(seller_id=seller.id)
+        qry = qry.order_by(desc(Products.created_at))
+        qry = qry.order_by(desc(Products.updated_at))
         
-    #     rows = []
-    #     for row in qry.limit(args['rp']).offset(offset).all():
-    #         marshal_row = marshal(row, Products.response_fields)
-    #         rows.append(marshal_row)
+        rows = []
+        for row in qry.limit(args['rp']).offset(offset).all():
+            marshal_row = marshal(row, Products.response_fields)
+            rows.append(marshal_row)
 
-    #     app.logger.debug('DEBUG : %s', rows)
+        app.logger.debug('DEBUG : %s', rows)
 
-    #     return rows, 200
+        return rows, 200
 
 # class ProductUser(Resource):
 #     def options(self):
