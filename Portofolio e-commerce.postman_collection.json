@@ -1,0 +1,1126 @@
+{
+	"info": {
+		"_postman_id": "85f7c6bb-82ef-44a6-bc38-ab8af0571cc2",
+		"name": "Portofolio e-commerce",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "token",
+			"item": [
+				{
+					"name": "create token",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://e-commerce-be.andreino.tech/login?username=andre&password=andre",
+							"protocol": "https",
+							"host": [
+								"e-commerce-be",
+								"andreino",
+								"tech"
+							],
+							"path": [
+								"login"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "andre"
+								},
+								{
+									"key": "password",
+									"value": "andre"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refresh token",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "post user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\":\"aisyah\",\n\t\"password\":\"aisyah\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{develop}}/user",
+							"host": [
+								"{{develop}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all (admin)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1OTE1NDEzMzIsIm5iZiI6MTU5MTU0MTMzMiwianRpIjoiMjdhNTUxZmEtMDg3Ni00NjYyLTkzNjgtMjg5YTBiMTdmOTBiIiwiZXhwIjoxNTkxNjI3NzMyLCJpZGVudGl0eSI6ImFkbWluIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIiwidXNlcl9jbGFpbXMiOnsiaWQiOjIsInVzZXJuYW1lIjoiYWRtaW4iLCJzdGF0dXNfaW50ZXJuYWwiOnRydWUsInN0YXR1c19wZW5qdWFsIjpmYWxzZSwic3RhdHVzX2FkbWluIjp0cnVlfX0.4TBOu_tqOopBj4ycaKgitee3km5DX5QZDnSL09Wi5Ek",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ecommerce}}/user/admin",
+							"host": [
+								"{{ecommerce}}"
+							],
+							"path": [
+								"user",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get by user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1OTEzMjIzMjcsIm5iZiI6MTU5MTMyMjMyNywianRpIjoiNGVmMDJiODgtZDMyMi00YzUwLTg5MWEtYjU0Yzk0YTRkNDdjIiwiZXhwIjoxNTkxNDA4NzI3LCJpZGVudGl0eSI6ImFuZHJlIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIiwidXNlcl9jbGFpbXMiOnsiaWQiOjEsInVzZXJuYW1lIjoiYW5kcmUiLCJzdGF0dXNfaW50ZXJuYWwiOnRydWUsInN0YXR1c19wZW5qdWFsIjpmYWxzZSwic3RhdHVzX2FkbWluIjpmYWxzZX19.GtvZVXj7l0GHwkJT6uRj3-xeG3kTjiqpbQZiDGHwkgo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://e-commerce-be.andreino.tech/user",
+							"protocol": "https",
+							"host": [
+								"e-commerce-be",
+								"andreino",
+								"tech"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete by admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODk4NjU1MjEsIm5iZiI6MTU4OTg2NTUyMSwianRpIjoiZDY3ODdkNzktOGQ2My00NGUyLTgxMzktOWY5NWJiZmYyZTQxIiwiZXhwIjoxNTg5OTUxOTIxLCJpZGVudGl0eSI6ImFkbWluIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIiwidXNlcl9jbGFpbXMiOnsiaWQiOjIsInVzZXJuYW1lIjoiYWRtaW4iLCJzdGF0dXNfaW50ZXJuYWwiOnRydWUsInN0YXR1c19wZW5qdWFsIjpmYWxzZSwic3RhdHVzX2FkbWluIjp0cnVlfX0.tRVE1nhHZzfb2CPN8ALOBC-UYbz5MOf8B1T6e-79Iwg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{develop}}/user/admin/12",
+							"host": [
+								"{{develop}}"
+							],
+							"path": [
+								"user",
+								"admin",
+								"12"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit by user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODk3ODQxMDIsIm5iZiI6MTU4OTc4NDEwMiwianRpIjoiNzAzNTcwN2UtZDg4OC00NDY0LTliOTUtNzE2MmMyMDc1Mzg1IiwiZXhwIjoxNTg5ODcwNTAyLCJpZGVudGl0eSI6Im11bHNhbm5lIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIiwidXNlcl9jbGFpbXMiOnsiaWQiOjksInVzZXJuYW1lIjoibXVsc2FubmUiLCJzdGF0dXNfaW50ZXJuYWwiOnRydWUsInN0YXR1c19wZW5qdWFsIjpmYWxzZSwic3RhdHVzX2FkbWluIjpmYWxzZX19.pHaZP9JOu_Jm84k7LogaQrJy5Sv0Mr19U2vWLvGFisQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"status_penjual\":true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{develop}}/user",
+							"host": [
+								"{{develop}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "pembeli",
+			"item": [
+				{
+					"name": "post biodata pembeli",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1OTE0MDI1NjAsIm5iZiI6MTU5MTQwMjU2MCwianRpIjoiYjIwOTRhNWEtNTBmNi00YTA5LThlMzYtYWY1NjYzOTViNjkxIiwiZXhwIjoxNTkxNDg4OTYwLCJpZGVudGl0eSI6ImFsdWwiLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpZCI6NiwidXNlcm5hbWUiOiJhbHVsIiwic3RhdHVzX2ludGVybmFsIjp0cnVlLCJzdGF0dXNfcGVuanVhbCI6ZmFsc2UsInN0YXR1c19hZG1pbiI6ZmFsc2V9fQ.1uQ3eJZ94mCjz-STHhRYPnQjgzvgMLjd7cDGo2ud9_k",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"nama\": \"bagas rahmadi\",\n\t\"email\":\"bagasrhmd@gamil.com\",\n\t\"alamat\":\"klaten\",\n\t\"no_hp\":\"081234567890\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{develop}}/pembeli",
+							"host": [
+								"{{develop}}"
+							],
+							"path": [
+								"pembeli"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get by user login",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1OTEzMjIzMjcsIm5iZiI6MTU5MTMyMjMyNywianRpIjoiNGVmMDJiODgtZDMyMi00YzUwLTg5MWEtYjU0Yzk0YTRkNDdjIiwiZXhwIjoxNTkxNDA4NzI3LCJpZGVudGl0eSI6ImFuZHJlIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIiwidXNlcl9jbGFpbXMiOnsiaWQiOjEsInVzZXJuYW1lIjoiYW5kcmUiLCJzdGF0dXNfaW50ZXJuYWwiOnRydWUsInN0YXR1c19wZW5qdWFsIjpmYWxzZSwic3RhdHVzX2FkbWluIjpmYWxzZX19.GtvZVXj7l0GHwkJT6uRj3-xeG3kTjiqpbQZiDGHwkgo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://e-commerce-be.andreino.tech/pembeli",
+							"protocol": "https",
+							"host": [
+								"e-commerce-be",
+								"andreino",
+								"tech"
+							],
+							"path": [
+								"pembeli"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get by admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODkxMjU1NTcsIm5iZiI6MTU4OTEyNTU1NywianRpIjoiM2FjYzJiMGUtYjgzYS00NmI4LTkyNTctNjdjNzhkOWNmOTNlIiwiZXhwIjoxNTg5MjExOTU3LCJpZGVudGl0eSI6ImFkbWluIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIiwidXNlcl9jbGFpbXMiOnsiaWQiOjIsInVzZXJuYW1lIjoiYWRtaW4iLCJzdGF0dXNfaW50ZXJuYWwiOnRydWUsInN0YXR1c19wZW5qdWFsIjpmYWxzZSwic3RhdHVzX2FkbWluIjp0cnVlfX0.G0MDPjlDowNJER4s82QeQ11r9TmyGWClyDfYFoUcoQA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{develop}}/pembeli/admin",
+							"host": [
+								"{{develop}}"
+							],
+							"path": [
+								"pembeli",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete by admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODkxMjQ1ODgsIm5iZiI6MTU4OTEyNDU4OCwianRpIjoiNzUwNjljZWItNDZjNC00YzgzLWJhN2UtYzY5NzQzNmY2NGY0IiwiZXhwIjoxNTg5MjEwOTg4LCJpZGVudGl0eSI6ImFkbWluIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIiwidXNlcl9jbGFpbXMiOnsiaWQiOjIsInVzZXJuYW1lIjoiYWRtaW4iLCJzdGF0dXNfaW50ZXJuYWwiOiJUcnVlIiwic3RhdHVzX3Blbmp1YWwiOiJGYWxzZSIsInN0YXR1c19hZG1pbiI6IlRydWUifX0.kVd7q2upcVlNN04XVQXpCNu-9zJdo0zfD1i9IiZ_8PQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{develop}}/pembeli/admin/3",
+							"host": [
+								"{{develop}}"
+							],
+							"path": [
+								"pembeli",
+								"admin",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit data by user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODkxMjQ1ODgsIm5iZiI6MTU4OTEyNDU4OCwianRpIjoiNzUwNjljZWItNDZjNC00YzgzLWJhN2UtYzY5NzQzNmY2NGY0IiwiZXhwIjoxNTg5MjEwOTg4LCJpZGVudGl0eSI6ImFkbWluIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIiwidXNlcl9jbGFpbXMiOnsiaWQiOjIsInVzZXJuYW1lIjoiYWRtaW4iLCJzdGF0dXNfaW50ZXJuYWwiOiJUcnVlIiwic3RhdHVzX3Blbmp1YWwiOiJGYWxzZSIsInN0YXR1c19hZG1pbiI6IlRydWUifX0.kVd7q2upcVlNN04XVQXpCNu-9zJdo0zfD1i9IiZ_8PQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\":\"admin@admin.id\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{develop}}/pembeli",
+							"host": [
+								"{{develop}}"
+							],
+							"path": [
+								"pembeli"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "penjual",
+			"item": [
+				{
+					"name": "tambah biodata",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODk3ODQxNjgsIm5iZiI6MTU4OTc4NDE2OCwianRpIjoiNWIzNmU5YTYtNDY1OC00NTNkLWIwNzktMzk1ZWY0OWYzZGU1IiwiZXhwIjoxNTg5ODcwNTY4LCJpZGVudGl0eSI6Im11bHNhbm5lIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIiwidXNlcl9jbGFpbXMiOnsiaWQiOjksInVzZXJuYW1lIjoibXVsc2FubmUiLCJzdGF0dXNfaW50ZXJuYWwiOnRydWUsInN0YXR1c19wZW5qdWFsIjp0cnVlLCJzdGF0dXNfYWRtaW4iOmZhbHNlfX0.PryRBLvwC0B0OTw5WnXMC3ORVdxeKEEMocvMUGj1aKU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"nama\": \"Mulsanne\",\n\t\"email\":\"mulsanne@gmail.com\",\n\t\"alamat\":\"surabaya\",\n\t\"no_hp\":\"089765432123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{develop}}/penjual",
+							"host": [
+								"{{develop}}"
+							],
+							"path": [
+								"penjual"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get by user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1OTE0NTIyNjEsIm5iZiI6MTU5MTQ1MjI2MSwianRpIjoiNzczNWE5NzEtNTgwNi00YTFmLTkzMjYtOGY1YzBiMjM5ZTg1IiwiZXhwIjoxNTkxNTM4NjYxLCJpZGVudGl0eSI6ImlzZWUiLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpZCI6NywidXNlcm5hbWUiOiJpc2VlIiwic3RhdHVzX2ludGVybmFsIjp0cnVlLCJzdGF0dXNfcGVuanVhbCI6dHJ1ZSwic3RhdHVzX2FkbWluIjpmYWxzZX19.1cIKHuQ3yTpjn9xd7ZhyuLy0-8HHbAINDjUBpYXUQNo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ecommerce}}/penjual",
+							"host": [
+								"{{ecommerce}}"
+							],
+							"path": [
+								"penjual"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get by admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODkxMjc2NTksIm5iZiI6MTU4OTEyNzY1OSwianRpIjoiNGNmMmViNjUtY2FjMC00ZjBlLThhNDEtNmExYTAxZDllNGQ4IiwiZXhwIjoxNTg5MjE0MDU5LCJpZGVudGl0eSI6ImFkbWluIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIiwidXNlcl9jbGFpbXMiOnsiaWQiOjIsInVzZXJuYW1lIjoiYWRtaW4iLCJzdGF0dXNfaW50ZXJuYWwiOnRydWUsInN0YXR1c19wZW5qdWFsIjpmYWxzZSwic3RhdHVzX2FkbWluIjp0cnVlfX0.Q_sw27WRvh472QwdPY1RmAO9lKu6f62HBiw2iXqf21Y",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{develop}}/penjual/admin",
+							"host": [
+								"{{develop}}"
+							],
+							"path": [
+								"penjual",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit data by user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODk2MTM3MzEsIm5iZiI6MTU4OTYxMzczMSwianRpIjoiYTA0YWE1NTMtYzc4NC00MDAyLWJiZTctMzNmMTM5OWRkOWNhIiwiZXhwIjoxNTg5NzAwMTMxLCJpZGVudGl0eSI6InBlbmp1YWwiLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpZCI6NCwidXNlcm5hbWUiOiJwZW5qdWFsIiwic3RhdHVzX2ludGVybmFsIjp0cnVlLCJzdGF0dXNfcGVuanVhbCI6dHJ1ZSwic3RhdHVzX2FkbWluIjpmYWxzZX19.oVn1MiA1vh6Rkr6SNaIbo0_3Cj9ujsgClcWCAiR8mQU",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"nama\":\"akhi shop\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{develop}}/penjual",
+							"host": [
+								"{{develop}}"
+							],
+							"path": [
+								"penjual"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete by admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODkxMjc2NTksIm5iZiI6MTU4OTEyNzY1OSwianRpIjoiNGNmMmViNjUtY2FjMC00ZjBlLThhNDEtNmExYTAxZDllNGQ4IiwiZXhwIjoxNTg5MjE0MDU5LCJpZGVudGl0eSI6ImFkbWluIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIiwidXNlcl9jbGFpbXMiOnsiaWQiOjIsInVzZXJuYW1lIjoiYWRtaW4iLCJzdGF0dXNfaW50ZXJuYWwiOnRydWUsInN0YXR1c19wZW5qdWFsIjpmYWxzZSwic3RhdHVzX2FkbWluIjp0cnVlfX0.Q_sw27WRvh472QwdPY1RmAO9lKu6f62HBiw2iXqf21Y",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{develop}}/penjual/admin/3",
+							"host": [
+								"{{develop}}"
+							],
+							"path": [
+								"penjual",
+								"admin",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "kategori produk",
+			"item": [
+				{
+					"name": "tambah kategori by admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODk4NTUxNDEsIm5iZiI6MTU4OTg1NTE0MSwianRpIjoiNmMyMDBiZjMtY2FjZi00N2Q1LThiMDYtNjhiZWFlYTQ4ODRmIiwiZXhwIjoxNTg5OTQxNTQxLCJpZGVudGl0eSI6ImFkbWluIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIiwidXNlcl9jbGFpbXMiOnsiaWQiOjIsInVzZXJuYW1lIjoiYWRtaW4iLCJzdGF0dXNfaW50ZXJuYWwiOnRydWUsInN0YXR1c19wZW5qdWFsIjpmYWxzZSwic3RhdHVzX2FkbWluIjp0cnVlfX0.7D7uPTfUftLfB84y6ZL6N_nLEEdRtjjnxlPd72idHNw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"tipe_produk\":\"beaglebone\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{develop}}/kategori/admin",
+							"host": [
+								"{{develop}}"
+							],
+							"path": [
+								"kategori",
+								"admin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit by admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODk4NTUzODIsIm5iZiI6MTU4OTg1NTM4MiwianRpIjoiOTYwN2ZiZjMtNDYzNy00MzJlLTk3ZmUtYTZmZTMzNGQ0NDQ2IiwiZXhwIjoxNTg5OTQxNzgyLCJpZGVudGl0eSI6ImFkbWluIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIiwidXNlcl9jbGFpbXMiOnsiaWQiOjIsInVzZXJuYW1lIjoiYWRtaW4iLCJzdGF0dXNfaW50ZXJuYWwiOnRydWUsInN0YXR1c19wZW5qdWFsIjpmYWxzZSwic3RhdHVzX2FkbWluIjp0cnVlfX0.PTV2ZqZ7tW-MCJKWp_qAzbcLTVD-nW6A0ZBZC_NjRXY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"tipe_produk\":\"Beaglebone\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{develop}}/kategori/admin/3",
+							"host": [
+								"{{develop}}"
+							],
+							"path": [
+								"kategori",
+								"admin",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://e-commerce-be.andreino.tech/kategori",
+							"protocol": "https",
+							"host": [
+								"e-commerce-be",
+								"andreino",
+								"tech"
+							],
+							"path": [
+								"kategori"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{develop}}/kategori/2",
+							"host": [
+								"{{develop}}"
+							],
+							"path": [
+								"kategori",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete by admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODkxNDkwMTUsIm5iZiI6MTU4OTE0OTAxNSwianRpIjoiNWUyYTViYmMtZTA5Yy00OTZkLThjYTItYTE5M2VlY2ExZTdmIiwiZXhwIjoxNTg5MjM1NDE1LCJpZGVudGl0eSI6ImFkbWluIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIiwidXNlcl9jbGFpbXMiOnsiaWQiOjIsInVzZXJuYW1lIjoiYWRtaW4iLCJzdGF0dXNfaW50ZXJuYWwiOnRydWUsInN0YXR1c19wZW5qdWFsIjpmYWxzZSwic3RhdHVzX2FkbWluIjp0cnVlfX0.MDmheeBD5BHIHoIiE95O5QgUzsOPce6_pCH2NIlav-I",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{develop}}/kategori/admin/3",
+							"host": [
+								"{{develop}}"
+							],
+							"path": [
+								"kategori",
+								"admin",
+								"3"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "produk",
+			"item": [
+				{
+					"name": "tambah produk by penjual",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1OTE2NzE4MDcsIm5iZiI6MTU5MTY3MTgwNywianRpIjoiNWVlZTNlZjctMTZkOS00N2MzLTkxODAtMTA3ODI3NTBjZDQxIiwiZXhwIjoxNTkxNzU4MjA3LCJpZGVudGl0eSI6ImlzZWUiLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpZCI6NywidXNlcm5hbWUiOiJpc2VlIiwic3RhdHVzX2ludGVybmFsIjp0cnVlLCJzdGF0dXNfcGVuanVhbCI6dHJ1ZSwic3RhdHVzX2FkbWluIjpmYWxzZX19.wZa4Dwm2j0Adr8i-UkejR8tXks2bkzg9T6NjIMD4VP0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "nama",
+									"value": "ARDUINO PRO MINI V3 ATMEGA328P 5V BOARD PORT CH340 ELEKTRONIK MURAH",
+									"type": "text"
+								},
+								{
+									"key": "harga",
+									"value": "40000",
+									"type": "text"
+								},
+								{
+									"key": "berat",
+									"value": "15",
+									"type": "text"
+								},
+								{
+									"key": "deskripsi",
+									"value": "+==================================================================+\nArduino PRO MINI diotaki oleh ATmega328P-AU ini memiliki ukuran yang sesuai namanya, mini, dimensinya hanya 33.8mm x 18mm. Board ini cocok untuk mini project atau untuk melakukan prototyping di breadboard. Harganya termasuk paling murah diatara board arduino lainnya, ekonomis buat Siswa/i SMA/SMK dan mahasiswa/i yang belom dapet transferan bulanan hehehe\n\nPro mini ini juga memiliki 8 pin analog input sehingga memungkinkan untuk mendrive 8 motor ataupun kebutuhan lainnya. Pin header tidak disolder ke board sehingga agan bisa leluasa memasangnya sendiri agar sesuai kebutuhan. Untuk memprogram arduino ini, agan membutuhkan device tambahan USB to TTL converter seperti PL2303 atau FT232RL.\n\nDetail : Cek Gambar\nHarga adalah untuk 1 set\n+==================================================================+\n\nSpesifikasi :\nMicrocontroller: ATmega328\nOperating Voltage: 5V\nInput Voltage: 3.35V ~ 12V\nDigital I/O Pins: 14 (of which 6 provide PWM output)\nAnalog Input Pins: 8\nDC Current Per I/O Pin: 40mA\nFlash Memory: 16KB (of which 2KB used by bootloader)\nSRAM: 1KB\nEEPROM: 512bytes\nClock Speed: 8MHz\nSize: 33.3 x 17.6mm\n\nFitur:\n- Logic level 5V\n- Ukuran super mini 33.8mm x 18mm\n- Membutuhkan device tambahan agar terkoneksi ke komputer\n\nKelengkapan :\n1. 1 x 3.3V 8MHz Pro Mini\n2. pin header set\n\nBeaglebone Black merupakan single-board computer yang berbasiskan processor AM335x 1GHz ARM Cortex-A8. Beaglebone dapat menjalankan beberapa Operating system opensource, antaralain Debian, Android, Ubuntu dan masih banyak lagi OS yang bisa dijalankan di beaglebone ini.Ada beberapa revisi dari beaglebone black, yang terakhir adalah Rev.C\n\nSpesifikasi:\n- Catu daya : 5VDC @ 460mA\n- Berbasiskan : Sitara AM3358BZCZ100 ARM Cortex-A8, 1 GHz\n- Memiliki SDRAM 512MB DDR3L, 800 MHz\n- Flash eMMC : 4 GB\n- Memiliki konektor uSD\n- Memiliki konektor miniUSB (device) dan USB tipe A (USB Host)\n- Memiliki antarmuka : UART, SPI, CAN\n- Memiliki I/O yang dibisa digunakan untuk mengendalikan peralatan elektronika yang lain.\n- Memiliki micro HDMI untuk menampilkan gambar di TV/Monitor HDMI.\n\nFeatures:\n- AM3358 1GHz ARM Cortex-A8 Processor\n- 4GB 8-bit eMMC Onboard Flash\n- 3D Graphics Accelerator\n- NEON Floating-Point Accelerator\n- 2x PRU 32-bit Microcontroller\n\nConnectivity:\n- USB Client for power and communications\n- USB Host\n- Ethernet\n- Micro HDMI\n- 2x 46-pin Headers\n\nSoftware Compatibility\n- Angstrom Linux\n- Android\n- Ubuntu\n- Cloud9 IDE on Node.js with BoneScript\n- and More\n\nhttp://dlnmh9ip6v2uc.cloudfront.net/datasheets/Dev/Beagle/AM3359.pdf\nhttp://dlnmh9ip6v2uc.cloudfront.net/datasheets/Dev/Beagle/BBB_SRM.pdf\nhttp://elinux.org/Beagleboard:BeagleBoneBlack#Hardware_Files\nhttp://beagleboard.org/products/beaglebone%20black",
+									"type": "text"
+								},
+								{
+									"key": "gambar",
+									"type": "file",
+									"src": "/home/alta6/Downloads/Arduino-Pro-328.jpg"
+								},
+								{
+									"key": "kategori",
+									"value": "Arduino",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "{{ecommerce}}/produk",
+							"host": [
+								"{{ecommerce}}"
+							],
+							"path": [
+								"produk"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit produk by penjual",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODk4NTcwMjEsIm5iZiI6MTU4OTg1NzAyMSwianRpIjoiMWJmZmI4ODgtZjU2MC00YzBlLTg5Y2MtNDUzMDMxNmUxYzc0IiwiZXhwIjoxNTg5OTQzNDIxLCJpZGVudGl0eSI6Im11bHNhbm5lIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIiwidXNlcl9jbGFpbXMiOnsiaWQiOjksInVzZXJuYW1lIjoibXVsc2FubmUiLCJzdGF0dXNfaW50ZXJuYWwiOnRydWUsInN0YXR1c19wZW5qdWFsIjp0cnVlLCJzdGF0dXNfYWRtaW4iOmZhbHNlfX0.XZe08sJnvxGYaNNNgcuTQoKXBd5RzzAwhdfRYSKoD5I",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "nama",
+									"value": "Beaglebone Black - Rev B",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{develop}}/produk/penjual/7",
+							"host": [
+								"{{develop}}"
+							],
+							"path": [
+								"produk",
+								"penjual",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete produk by penjual",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODkxODU1NTksIm5iZiI6MTU4OTE4NTU1OSwianRpIjoiNmIzM2Q4YTYtMmIxNC00NGUxLThlOTQtZTQwOWQwM2MwZjczIiwiZXhwIjoxNTg5MjcxOTU5LCJpZGVudGl0eSI6InBlbmp1YWwiLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpZCI6NCwidXNlcm5hbWUiOiJwZW5qdWFsIiwic3RhdHVzX2ludGVybmFsIjp0cnVlLCJzdGF0dXNfcGVuanVhbCI6dHJ1ZSwic3RhdHVzX2FkbWluIjpmYWxzZX19.nnpeb4BtKZiuBlWgPaziLlEZrRiwtwmdBKV5j_fn-Eg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{develop}}/produk/penjual/3",
+							"host": [
+								"{{develop}}"
+							],
+							"path": [
+								"produk",
+								"penjual",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get produk by seller",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1OTE0NTIyNjEsIm5iZiI6MTU5MTQ1MjI2MSwianRpIjoiNzczNWE5NzEtNTgwNi00YTFmLTkzMjYtOGY1YzBiMjM5ZTg1IiwiZXhwIjoxNTkxNTM4NjYxLCJpZGVudGl0eSI6ImlzZWUiLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpZCI6NywidXNlcm5hbWUiOiJpc2VlIiwic3RhdHVzX2ludGVybmFsIjp0cnVlLCJzdGF0dXNfcGVuanVhbCI6dHJ1ZSwic3RhdHVzX2FkbWluIjpmYWxzZX19.1cIKHuQ3yTpjn9xd7ZhyuLy0-8HHbAINDjUBpYXUQNo",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://e-commerce-be.andreino.tech/produk/penjual",
+							"protocol": "https",
+							"host": [
+								"e-commerce-be",
+								"andreino",
+								"tech"
+							],
+							"path": [
+								"produk",
+								"penjual"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get produk all",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://e-commerce-be.andreino.tech/produk",
+							"protocol": "https",
+							"host": [
+								"e-commerce-be",
+								"andreino",
+								"tech"
+							],
+							"path": [
+								"produk"
+							],
+							"query": [
+								{
+									"key": "kategori",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete by admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODkxODU1NTksIm5iZiI6MTU4OTE4NTU1OSwianRpIjoiNmIzM2Q4YTYtMmIxNC00NGUxLThlOTQtZTQwOWQwM2MwZjczIiwiZXhwIjoxNTg5MjcxOTU5LCJpZGVudGl0eSI6InBlbmp1YWwiLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpZCI6NCwidXNlcm5hbWUiOiJwZW5qdWFsIiwic3RhdHVzX2ludGVybmFsIjp0cnVlLCJzdGF0dXNfcGVuanVhbCI6dHJ1ZSwic3RhdHVzX2FkbWluIjpmYWxzZX19.nnpeb4BtKZiuBlWgPaziLlEZrRiwtwmdBKV5j_fn-Eg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{develop}}/produk/admin/3",
+							"host": [
+								"{{develop}}"
+							],
+							"path": [
+								"produk",
+								"admin",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "keranjang",
+			"item": [
+				{
+					"name": "get",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1OTE2MDA0MzEsIm5iZiI6MTU5MTYwMDQzMSwianRpIjoiODNmYjU1ZGYtNWNlMS00MmJlLWFmOGQtZmZhMzk5N2Y0NWU1IiwiZXhwIjoxNTkxNjg2ODMxLCJpZGVudGl0eSI6ImFuZHJlIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIiwidXNlcl9jbGFpbXMiOnsiaWQiOjEsInVzZXJuYW1lIjoiYW5kcmUiLCJzdGF0dXNfaW50ZXJuYWwiOnRydWUsInN0YXR1c19wZW5qdWFsIjpmYWxzZSwic3RhdHVzX2FkbWluIjpmYWxzZX19.aQ9i_y9mLBjAGej1-H6Vcp1TNr9mTbMiOrHN2-eK-ao",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://e-commerce-be.andreino.tech/keranjang",
+							"protocol": "https",
+							"host": [
+								"e-commerce-be",
+								"andreino",
+								"tech"
+							],
+							"path": [
+								"keranjang"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{ecommerce}}/keranjang?product_id=1&quantity=3",
+							"host": [
+								"{{ecommerce}}"
+							],
+							"path": [
+								"keranjang"
+							],
+							"query": [
+								{
+									"key": "product_id",
+									"value": "1"
+								},
+								{
+									"key": "quantity",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODk2MDQ3ODYsIm5iZiI6MTU4OTYwNDc4NiwianRpIjoiYmVkZTE5YWMtNWYzMS00MWVhLWFhMTQtNjg1ZWU5ZmQ5Mjk3IiwiZXhwIjoxNTg5NjkxMTg2LCJpZGVudGl0eSI6ImJhZ2FzIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIiwidXNlcl9jbGFpbXMiOnsiaWQiOjExLCJ1c2VybmFtZSI6ImJhZ2FzIiwic3RhdHVzX2ludGVybmFsIjp0cnVlLCJzdGF0dXNfcGVuanVhbCI6ZmFsc2UsInN0YXR1c19hZG1pbiI6ZmFsc2V9fQ.STvTXPkXUOCHBIvWgoMoAo3gVATjZfIxiMy0u8nySVE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{develop}}/keranjang/13",
+							"host": [
+								"{{develop}}"
+							],
+							"path": [
+								"keranjang",
+								"13"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "checkout",
+			"item": [
+				{
+					"name": "post checkout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1ODk3MjEyNjcsIm5iZiI6MTU4OTcyMTI2NywianRpIjoiNDZjYmI0NTctNmNmMC00NjIxLTgzN2MtOWYwYmUyNjBmYzY2IiwiZXhwIjoxNTg5ODA3NjY3LCJpZGVudGl0eSI6ImFuZHJlIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIiwidXNlcl9jbGFpbXMiOnsiaWQiOjEsInVzZXJuYW1lIjoiYW5kcmUiLCJzdGF0dXNfaW50ZXJuYWwiOnRydWUsInN0YXR1c19wZW5qdWFsIjpmYWxzZSwic3RhdHVzX2FkbWluIjpmYWxzZX19.Yi6dbM6Vg4BiUrHMWy2yHiAgyiSM39Q-v_O_2VqBSD0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{develop}}/checkout",
+							"host": [
+								"{{develop}}"
+							],
+							"path": [
+								"checkout"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "history",
+			"item": [
+				{
+					"name": "get history pembeli",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1OTE3MDQyNDMsIm5iZiI6MTU5MTcwNDI0MywianRpIjoiYzZjMDNmODEtMDU1Yi00NThhLWEyMTAtOGM4OGM0ZDVmMjM2IiwiZXhwIjoxNTkxNzkwNjQzLCJpZGVudGl0eSI6ImFuZHJlIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIiwidXNlcl9jbGFpbXMiOnsiaWQiOjEsInVzZXJuYW1lIjoiYW5kcmUiLCJzdGF0dXNfaW50ZXJuYWwiOnRydWUsInN0YXR1c19wZW5qdWFsIjpmYWxzZSwic3RhdHVzX2FkbWluIjpmYWxzZX19.im6ErQt-MSogpX37XOIAhIWJWnMCa86_WHhY7XrAbs0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ecommerce}}/history/pembeli",
+							"host": [
+								"{{ecommerce}}"
+							],
+							"path": [
+								"history",
+								"pembeli"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get history penjual",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1OTE2MDc0MjUsIm5iZiI6MTU5MTYwNzQyNSwianRpIjoiOGM1OTk0YjItYjU1Ny00MzNlLTkwOTctMzU5ZGE3ZTYyZjZjIiwiZXhwIjoxNTkxNjkzODI1LCJpZGVudGl0eSI6ImlzZWUiLCJmcmVzaCI6ZmFsc2UsInR5cGUiOiJhY2Nlc3MiLCJ1c2VyX2NsYWltcyI6eyJpZCI6NywidXNlcm5hbWUiOiJpc2VlIiwic3RhdHVzX2ludGVybmFsIjp0cnVlLCJzdGF0dXNfcGVuanVhbCI6dHJ1ZSwic3RhdHVzX2FkbWluIjpmYWxzZX19.ACGEU6plLRF220VoLJquIE9vILcIUI89t0aFF35WqaI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{develop}}/history/penjual",
+							"host": [
+								"{{develop}}"
+							],
+							"path": [
+								"history",
+								"penjual"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
