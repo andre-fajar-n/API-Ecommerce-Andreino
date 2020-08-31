@@ -19,8 +19,8 @@ class Checkout(Resource):
         claims = get_jwt_claims()
         buyer = Buyers.query.filter_by(user_id=claims['id']).first()
         cart = Carts.query.filter_by(buyer_id=buyer.id)
+        cart = cart.filter_by(status_checkout=False)
         
-        print("checkout", cart)
         for qry in cart:
             qry.status_checkout = True
             db.session.commit()
