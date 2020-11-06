@@ -15,7 +15,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello():
-    return {'pesan': 'masuk'}, 200
+    return "<h1>Welcome to Andreino's Backend</h1>", 200
 
 CORS(app, origins="*", allow_headers=[
     "Content-Type", "Authorization", "Access-Control-Allow-Credentials"],
