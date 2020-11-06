@@ -13,9 +13,9 @@ from flask_sqlalchemy import SQLAlchemy
 ###############################################################
 app = Flask(__name__)
 
-# @app.route("/")
-# def hello():
-#     return {'pesan': 'masuk'}, 200
+@app.route("/")
+def hello():
+    return {'pesan': 'masuk'}, 200
 
 CORS(app, origins="*", allow_headers=[
     "Content-Type", "Authorization", "Access-Control-Allow-Credentials"],
@@ -67,10 +67,10 @@ elif my_flask == 'Testing':
 else:
     app.config.from_object(config.DevelopmentConfig)
 
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
+# db = SQLAlchemy(app)
+# migrate = Migrate(app, db)
 manager = Manager(app)
-manager.add_command('db', MigrateCommand)
+# manager.add_command('db', MigrateCommand)
 
 @app.before_request
 def before_request():
@@ -122,25 +122,25 @@ def after_request(response):
 
 
 # Import Blueprint
-from blueprints.kategori_produk.resources import bp_product_categories
-from blueprints.keranjang.resources import bp_cart
-from blueprints.pembeli.resources import bp_buyer
-from blueprints.penjual.resources import bp_seller
-from blueprints.produk.resources import bp_product
-from blueprints.token import bp_auth
-from blueprints.user.resources import bp_user
-from blueprints.checkout import bp_checkout
-from blueprints.history.resources import bp_history
+# from blueprints.kategori_produk.resources import bp_product_categories
+# from blueprints.keranjang.resources import bp_cart
+# from blueprints.pembeli.resources import bp_buyer
+# from blueprints.penjual.resources import bp_seller
+# from blueprints.produk.resources import bp_product
+# from blueprints.token import bp_auth
+# from blueprints.user.resources import bp_user
+# from blueprints.checkout import bp_checkout
+# from blueprints.history.resources import bp_history
 
 # Register Blueprint
-app.register_blueprint(bp_product_categories, url_prefix='/kategori')
-app.register_blueprint(bp_cart, url_prefix='/keranjang')
-app.register_blueprint(bp_buyer, url_prefix='/pembeli')
-app.register_blueprint(bp_seller, url_prefix='/penjual')
-app.register_blueprint(bp_product, url_prefix='/produk')
-app.register_blueprint(bp_auth, url_prefix='/login')
-app.register_blueprint(bp_user, url_prefix='/user')
-app.register_blueprint(bp_checkout, url_prefix='/checkout')
-app.register_blueprint(bp_history, url_prefix="/history")
+# app.register_blueprint(bp_product_categories, url_prefix='/kategori')
+# app.register_blueprint(bp_cart, url_prefix='/keranjang')
+# app.register_blueprint(bp_buyer, url_prefix='/pembeli')
+# app.register_blueprint(bp_seller, url_prefix='/penjual')
+# app.register_blueprint(bp_product, url_prefix='/produk')
+# app.register_blueprint(bp_auth, url_prefix='/login')
+# app.register_blueprint(bp_user, url_prefix='/user')
+# app.register_blueprint(bp_checkout, url_prefix='/checkout')
+# app.register_blueprint(bp_history, url_prefix="/history")
 
-db.create_all()
+# db.create_all()
