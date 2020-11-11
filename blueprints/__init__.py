@@ -67,10 +67,10 @@ elif my_flask == 'Testing':
 else:
     app.config.from_object(config.DevelopmentConfig)
 
-# db = SQLAlchemy(app)
-# migrate = Migrate(app, db)
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 manager = Manager(app)
-# manager.add_command('db', MigrateCommand)
+manager.add_command('db', MigrateCommand)
 
 @app.before_request
 def before_request():
@@ -143,4 +143,4 @@ def after_request(response):
 # app.register_blueprint(bp_checkout, url_prefix='/checkout')
 # app.register_blueprint(bp_history, url_prefix="/history")
 
-# db.create_all()
+db.create_all()
