@@ -7,7 +7,7 @@ from blueprints.models.transaction_details import TransactionDetails
 from blueprints.models.buyers import Buyers
 from blueprints.models.products import Products
 from blueprints.models.sellers import Sellers
-from blueprints import db, app, internal_required, penjual_required, admin_required
+from blueprints import db, app, internal_required, seller_required, admin_required
 from sqlalchemy import desc
 
 bp_cart = Blueprint('cart', __name__)

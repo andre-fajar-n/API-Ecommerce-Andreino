@@ -7,7 +7,7 @@ from blueprints.models.buyers import Buyers
 from blueprints.models.sellers import Sellers
 from blueprints.models.products import Products
 from blueprints.models.transaction_details import TransactionDetails
-from blueprints import db, app, internal_required, penjual_required, admin_required
+from blueprints import db, app, internal_required, seller_required, admin_required
 from sqlalchemy import desc
 
 bp_history = Blueprint('history', __name__)
@@ -55,7 +55,7 @@ class HistorySeller(Resource):
     def options(self):
         return {'status':'ok'}, 200
     
-    @penjual_required
+    @seller_required
     def get(self):
         claims = get_jwt_claims()
         # filter tabel buyer berdasarkan user yang sedang login

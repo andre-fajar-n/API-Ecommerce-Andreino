@@ -4,7 +4,7 @@ from flask_jwt_extended import get_jwt_claims, jwt_required
 import json
 from blueprints.models.carts import Carts
 from blueprints.models.buyers import Buyers
-from blueprints import db, app, internal_required, penjual_required, admin_required
+from blueprints import db, app, internal_required, seller_required, admin_required
 from sqlalchemy import desc
 
 bp_checkout = Blueprint('checkout', __name__)

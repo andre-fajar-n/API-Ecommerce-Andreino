@@ -1,10 +1,8 @@
-from flask import Blueprint
-from flask_restful import Resource, Api, reqparse, marshal, inputs
-from flask_jwt_extended import get_jwt_claims, jwt_required
-import json
+from blueprints import db, app, seller_required
 from blueprints.models.sellers import Sellers
-from blueprints import db, app, internal_required, penjual_required, admin_required
-from sqlalchemy import desc
+from flask import Blueprint
+from flask_jwt_extended.utils import get_jwt_claims
+from flask_restful import Api, Resource, marshal, reqparse
 
 bp_seller = Blueprint('seller', __name__)
 api = Api(bp_seller)
@@ -14,7 +12,7 @@ class Seller(Resource):
     def options(self):
         return {'status': 'ok'}, 200
 
-    @penjual_required
+    @seller_required
     def post(self):
         claims = get_jwt_claims()
         parser = reqparse.RequestParser()
@@ -32,7 +30,7 @@ class Seller(Resource):
 
         return marshal(seller, Sellers.response_fields), 200, {'Content-Type': 'application/json'}
 
-    @penjual_required
+    @seller_required
     def get(self):
         claims = get_jwt_claims()
         qry = Sellers.query.filter_by(user_id=claims['id']).first()
@@ -44,7 +42,7 @@ class Seller(Resource):
         app.logger.debug('DEBUG : biodata tidak ada')
         return {'status': 'biodata tidak ada'}, 404
 
-    @penjual_required
+    @seller_required
     def patch(self):
         claims = get_jwt_claims()
         qry = Sellers.query.filter_by(user_id=claims['id']).first()
@@ -73,56 +71,4 @@ class Seller(Resource):
 
         return marshal(qry, Sellers.response_fields), 200, {'Content-Type': 'application/json'}
 
-
-class SellerAdmin(Resource):
-    def options(self):
-        return {'status': 'ok'}, 200
-
-    @admin_required
-    def delete(self, id):
-        qry = Sellers.query.get(id)
-        if qry is None:
-            app.logger.debug('DEBUG : id tidak ada')
-            return {'status': 'NOT_FOUND'}, 404
-
-        db.session.delete(qry)
-        db.session.commit()
-
-        app.logger.debug('DEBUG : data telah terhapus')
-
-        return {'status': 'DELETED'}, 200
-
-    @admin_required
-    def get(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument('p', type=int, location='args', default=1)
-        parser.add_argument('rp', type=int, location='args', default=25)
-        parser.add_argument('orderby', location='args',
-                            help='invalid orderby value', choices=('nama'))
-        parser.add_argument('sort', location='args',
-                            help='invalid sort value', choices=('desc', 'asc'))
-
-        args = parser.parse_args()
-
-        offset = (args['p'] * args['rp'] - args['rp'])
-
-        qry = Sellers.query
-
-        if args['orderby'] is not None:
-            if args['orderby'] == 'nama':
-                if args['sort'] == 'desc':
-                    qry = qry.order_by(desc(Sellers.id))
-                else:
-                    qry = qry.order_by(Sellers.id)
-
-        rows = []
-        for row in qry.limit(args['rp']).offset(offset).all():
-            rows.append(marshal(row, Sellers.response_fields))
-
-        app.logger.debug('DEBUG : %s', rows)
-
-        return rows, 200
-
-
-api.add_resource(SellerAdmin, '/admin/<id>', '/admin')
-api.add_resource(Seller, '')
+api.add_resource(Seller, "")

@@ -1,3 +1,4 @@
+from blueprints.resources.admin.seller import AdminSeller
 from blueprints.resources.admin.buyer import AdminBuyer
 from blueprints.resources.admin.user import AdminUser
 from flask.blueprints import Blueprint
@@ -8,3 +9,4 @@ api = Api(bp_admin)
 
 api.add_resource(AdminUser, "/user", "/user/<id>")
 api.add_resource(AdminBuyer, "/buyer", "/buyer/<id>")
+api.add_resource(AdminSeller, "/seller", "/seller/<id>")

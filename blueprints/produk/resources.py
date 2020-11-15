@@ -8,7 +8,7 @@ import uuid
 from blueprints.models.products import Products
 from blueprints.models.product_categories import ProductCategories
 from blueprints.models.sellers import Sellers
-from blueprints import db, app, internal_required, penjual_required, admin_required
+from blueprints import db, app, internal_required, seller_required, admin_required
 from sqlalchemy import desc
 
 bp_product = Blueprint('product', __name__)
@@ -19,7 +19,7 @@ class ProductSeller(Resource):
     def options(self):
         return {'status': 'ok'}, 200
 
-    @penjual_required
+    @seller_required
     def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument('nama', location='form', required=True)
@@ -71,7 +71,7 @@ class ProductSeller(Resource):
 
         return marshal(product, Products.response_fields), 200, {'Content-Type': 'application/json'}
 
-    @penjual_required
+    @seller_required
     def patch(self, id):
         qry = Products.query.get(id)
         if qry is None:
@@ -129,7 +129,7 @@ class ProductSeller(Resource):
 
         return marshal(qry, Products.response_fields), 200, {'Content-Type': 'application/json'}
 
-    @penjual_required
+    @seller_required
     def delete(self, id):
         qry = Products.query.get(id)
         if qry is None:
@@ -143,7 +143,7 @@ class ProductSeller(Resource):
 
         return {'status': 'DELETED'}, 200
     
-    @penjual_required
+    @seller_required
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('p', type=int, location='args', default=1)

@@ -35,7 +35,7 @@ def internal_required(fn):
             return {'status': 'FORBIDDEN', 'message': 'Internal Only!'}, 403
     return wrapper
 
-def penjual_required(fn):
+def seller_required(fn):
     @wraps(fn)
     def wrapper(*args, **kwargs):
         verify_jwt_in_request()

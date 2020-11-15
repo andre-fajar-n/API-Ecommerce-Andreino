@@ -3,7 +3,7 @@ from flask_restful import Resource, Api, reqparse, marshal, inputs
 from flask_jwt_extended import get_jwt_claims
 import json
 from blueprints.models.product_categories import ProductCategories
-from blueprints import db, app, internal_required, penjual_required, admin_required
+from blueprints import db, app, internal_required, seller_required, admin_required
 from sqlalchemy import desc
 
 bp_product_categories = Blueprint('product_categories', __name__)
