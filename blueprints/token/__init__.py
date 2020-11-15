@@ -3,7 +3,7 @@ from flask_restful import Api, Resource, reqparse, marshal
 from functools import wraps
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, get_jwt_claims
 
-from ..user.model import Users
+from blueprints.models.users import Users
 import hashlib
 
 from blueprints import internal_required

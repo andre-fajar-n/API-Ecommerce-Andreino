@@ -9,7 +9,6 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import backref
 
-
 class Carts(db.Model):
     __tablename__ = "carts"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)

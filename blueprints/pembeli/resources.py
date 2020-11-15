@@ -2,7 +2,7 @@ from flask import Blueprint
 from flask_restful import Resource, Api, reqparse, marshal, inputs
 from flask_jwt_extended import get_jwt_claims, jwt_required
 import json
-from .model import Buyers
+from blueprints.models.buyers import Buyers
 from blueprints import db, app, internal_required, admin_required
 from sqlalchemy import desc
 

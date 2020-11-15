@@ -6,7 +6,7 @@ from blueprints import db, app
 from blueprints.book.model import Books
 from blueprints.client.model import Clients
 from blueprints.rent.model import Rent
-from blueprints.user.model import Users
+from blueprints.models.users import Users
 
 def call_client(request):
     client = app.test_client()

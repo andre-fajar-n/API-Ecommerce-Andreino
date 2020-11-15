@@ -2,11 +2,11 @@ from flask import Blueprint
 from flask_restful import Resource, Api, reqparse, marshal, inputs
 from flask_jwt_extended import get_jwt_claims, jwt_required
 import json
-from blueprints.keranjang.model import Carts
-from blueprints.pembeli.model import Buyers
-from blueprints.penjual.model import Sellers
-from blueprints.produk.model import Products
-from blueprints.detail_transaksi.model import TransactionDetails
+from blueprints.models.carts import Carts
+from blueprints.models.buyers import Buyers
+from blueprints.models.sellers import Sellers
+from blueprints.models.products import Products
+from blueprints.models.transaction_details import TransactionDetails
 from blueprints import db, app, internal_required, penjual_required, admin_required
 from sqlalchemy import desc
 

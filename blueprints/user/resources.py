@@ -2,7 +2,7 @@ from flask import Blueprint
 from flask_restful import Resource, Api, reqparse, marshal, inputs
 from flask_jwt_extended import get_jwt_claims
 import json
-from .model import Users
+from blueprints.models.users import Users
 from blueprints import db, app, admin_required, internal_required
 from sqlalchemy import desc
 import hashlib

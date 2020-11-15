@@ -120,7 +120,6 @@ def after_request(response):
         pass
     return response
 
-
 # Import Blueprint
 from blueprints.kategori_produk.resources import bp_product_categories
 from blueprints.keranjang.resources import bp_cart

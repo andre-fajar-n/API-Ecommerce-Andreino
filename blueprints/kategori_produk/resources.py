@@ -2,7 +2,7 @@ from flask import Blueprint
 from flask_restful import Resource, Api, reqparse, marshal, inputs
 from flask_jwt_extended import get_jwt_claims
 import json
-from .model import ProductCategories
+from blueprints.models.product_categories import ProductCategories
 from blueprints import db, app, internal_required, penjual_required, admin_required
 from sqlalchemy import desc
 

@@ -5,9 +5,9 @@ import json
 import werkzeug
 import os
 import uuid
-from .model import Products
-from blueprints.kategori_produk.model import ProductCategories
-from blueprints.penjual.model import Sellers
+from blueprints.models.products import Products
+from blueprints.models.product_categories import ProductCategories
+from blueprints.models.sellers import Sellers
 from blueprints import db, app, internal_required, penjual_required, admin_required
 from sqlalchemy import desc
 
@@ -108,6 +108,7 @@ class ProductSeller(Resource):
 
             image_produk = args['gambar']
 
+            filename = ""
             if image_produk:
                 randomstr = uuid.uuid4().hex  # get randum string to image filename
                 filename = randomstr+'_'+image_produk.filename
