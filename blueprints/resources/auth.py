@@ -51,7 +51,7 @@ class Login(Resource):
 
         result = {
             "message":{},
-            "data":""
+            "data":{}
         }
         if qry_client is not None:
             client_salt = qry_client.salt

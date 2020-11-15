@@ -29,10 +29,10 @@ def internal_required(fn):
     def wrapper(*args, **kwargs):
         verify_jwt_in_request()
         claims = get_jwt_claims()
-        if not claims['status_internal']:  # hard code
-            return {'status': 'FORBIDDEN', 'message': 'Internal Only!'}, 403
-        else:
+        if claims['status_internal']:  # hard code
             return fn(*args, **kwargs)
+        else:
+            return {'status': 'FORBIDDEN', 'message': 'Internal Only!'}, 403
     return wrapper
 
 def penjual_required(fn):
@@ -40,10 +40,10 @@ def penjual_required(fn):
     def wrapper(*args, **kwargs):
         verify_jwt_in_request()
         claims = get_jwt_claims()
-        if not claims['status_penjual']:  # hard code
-            return {'status': 'FORBIDDEN', 'message': 'Bukan penjual'}, 403
-        else:
+        if claims['status_penjual']:  # hard code
             return fn(*args, **kwargs)
+        else:
+            return {'status': 'FORBIDDEN', 'message': 'Bukan penjual'}, 403
     return wrapper
 
 
@@ -52,10 +52,10 @@ def admin_required(fn):
     def wrapper(*args, **kwargs):
         verify_jwt_in_request()
         claims = get_jwt_claims()
-        if not claims['status_admin']:  # hard code
-            return {'status': 'FORBIDDEN', 'message': 'Bukan admin'}, 403
-        else:
+        if claims['status_admin']:  # hard code
             return fn(*args, **kwargs)
+        else:
+            return {'status': 'FORBIDDEN', 'message': 'Bukan admin'}, 403
     return wrapper
 
 
@@ -122,23 +122,27 @@ def after_request(response):
 
 # Import Blueprint
 from blueprints.resources.auth import bp_auth
+from blueprints.resources.user import bp_user
+from blueprints.resources.admin import bp_admin
+
 from blueprints.kategori_produk.resources import bp_product_categories
 from blueprints.keranjang.resources import bp_cart
 from blueprints.pembeli.resources import bp_buyer
 from blueprints.penjual.resources import bp_seller
 from blueprints.produk.resources import bp_product
-from blueprints.user.resources import bp_user
 from blueprints.checkout import bp_checkout
 from blueprints.history.resources import bp_history
 
 # Register Blueprint
 app.register_blueprint(bp_auth, url_prefix='/auth')
+app.register_blueprint(bp_user, url_prefix='/user')
+app.register_blueprint(bp_admin, url_prefix='/admin')
+
 app.register_blueprint(bp_product_categories, url_prefix='/kategori')
 app.register_blueprint(bp_cart, url_prefix='/keranjang')
 app.register_blueprint(bp_buyer, url_prefix='/pembeli')
 app.register_blueprint(bp_seller, url_prefix='/penjual')
 app.register_blueprint(bp_product, url_prefix='/produk')
-app.register_blueprint(bp_user, url_prefix='/user')
 app.register_blueprint(bp_checkout, url_prefix='/checkout')
 app.register_blueprint(bp_history, url_prefix="/history")
 
