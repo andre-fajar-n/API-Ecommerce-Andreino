@@ -16,28 +16,6 @@ class User(Resource):
     def options(self):
         return {'status': 'ok'}, 200
 
-    def post(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument('username', location='json', required=True)
-        parser.add_argument('password', location='json', required=True)
-        parser.add_argument('status_internal', location='json', type=bool, default=True)
-        parser.add_argument('status_penjual', location='json', type=bool)
-        parser.add_argument('status_admin', location='json', type=bool)
-        args = parser.parse_args()
-
-        salt = uuid.uuid4().hex
-        encoded = ('%s%s' % (args['password'], salt)).encode('utf-8')
-        hash_pass = hashlib.sha512(encoded).hexdigest()
-
-        user = Users(args['username'], hash_pass, salt,
-                     args['status_internal'], args['status_penjual'], args['status_admin'])
-        db.session.add(user)
-        db.session.commit()
-
-        app.logger.debug('DEBUG : %s', user)
-
-        return marshal(user, Users.response_fields), 200, {'Content-Type': 'application/json'}
-
     @internal_required
     def get(self):
         claims = get_jwt_claims()
@@ -106,10 +84,8 @@ class UserAdmin(Resource):
         parser = reqparse.RequestParser()
         parser.add_argument('p', type=int, location='args', default=1)
         parser.add_argument('rp', type=int, location='args', default=25)
-        parser.add_argument('orderby', location='args',
-                            help='invalid orderby value', choices=('username'))
-        parser.add_argument('sort', location='args',
-                            help='invalid sort value', choices=('desc', 'asc'))
+        parser.add_argument('orderby', location='args',help='invalid orderby value', choices=('username'))
+        parser.add_argument('sort', location='args',help='invalid sort value', choices=('desc', 'asc'))
 
         args = parser.parse_args()
 
