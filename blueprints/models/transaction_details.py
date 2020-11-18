@@ -10,7 +10,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import backref
 
 
-class TransactionDetails(db.Model):
+class TransactionDetailModel(db.Model):
     __tablename__ = "transaction_details"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     harga = db.Column(db.Integer, default=0)

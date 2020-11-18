@@ -1,12 +1,12 @@
 import pytest, json, logging, hashlib, uuid
 from flask import Flask, request, json
-from app import cache
+from wsgi import cache
 from blueprints import db, app 
 
 from blueprints.book.model import Books
 from blueprints.client.model import Clients
 from blueprints.rent.model import Rent
-from blueprints.models.users import Users
+from blueprints.models.users import UserModel
 
 def call_client(request):
     client = app.test_client()

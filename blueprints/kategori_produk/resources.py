@@ -2,7 +2,7 @@ from flask import Blueprint
 from flask_restful import Resource, Api, reqparse, marshal, inputs
 from flask_jwt_extended import get_jwt_claims
 import json
-from blueprints.models.product_categories import ProductCategories
+from blueprints.models.product_categories import ProductCategorieModel
 from blueprints import db, app, internal_required, seller_required, admin_required
 from sqlalchemy import desc
 
@@ -20,17 +20,17 @@ class ProductTypeAdmin(Resource):
         parser.add_argument('tipe_produk', location='json', required=True)
         args = parser.parse_args()
 
-        product_types = ProductCategories(args['tipe_produk'])
+        product_types = ProductCategorieModel(args['tipe_produk'])
         db.session.add(product_types)
         db.session.commit()
 
         app.logger.debug('DEBUG : %s', product_types)
 
-        return marshal(product_types, ProductCategories.response_fields), 200, {'Content-Type': 'application/json'}
+        return marshal(product_types, ProductCategorieModel.response_fields), 200, {'Content-Type': 'application/json'}
 
     @admin_required
     def patch(self, id):
-        qry = ProductCategories.query.get(id)
+        qry = ProductCategorieModel.query.get(id)
         if qry is None:
             app.logger.debug('DEBUG : id tidak ada')
             return {'status': 'NOT_FOUND'}, 404
@@ -46,11 +46,11 @@ class ProductTypeAdmin(Resource):
 
         app.logger.debug('DEBUG : %s', qry)
 
-        return marshal(qry, ProductCategories.response_fields), 200, {'Content-Type': 'application/json'}
+        return marshal(qry, ProductCategorieModel.response_fields), 200, {'Content-Type': 'application/json'}
 
     @admin_required
     def delete(self, id):
-        qry = ProductCategories.query.get(id)
+        qry = ProductCategorieModel.query.get(id)
         if qry is None:
             app.logger.debug('DEBUG : id tidak ada')
             return {'status': 'NOT_FOUND'}, 404
@@ -67,10 +67,10 @@ class ProductTypeUser(Resource):
         return {'status': 'ok'}, 200
 
     def get(self, id):
-        qry = ProductCategories.query.get(id)
+        qry = ProductCategorieModel.query.get(id)
         if qry is not None:
             app.logger.debug('DEBUG : %s', qry)
-            return marshal(qry, ProductCategories.response_fields), 200
+            return marshal(qry, ProductCategorieModel.response_fields), 200
 
         app.logger.debug('DEBUG : id tidak ada')
         return {'status': 'NOT_FOUND'}, 404
@@ -92,18 +92,18 @@ class ProductTypeUserList(Resource):
 
         offset = (args['p'] * args['rp'] - args['rp'])
 
-        qry = ProductCategories.query
+        qry = ProductCategorieModel.query
 
         if args['orderby'] is not None:
             if args['orderby'] == 'tipe_produk':
                 if args['sort'] == 'desc':
-                    qry = qry.order_by(desc(ProductCategories.id))
+                    qry = qry.order_by(desc(ProductCategorieModel.id))
                 else:
-                    qry = qry.order_by(ProductCategories.id)
+                    qry = qry.order_by(ProductCategorieModel.id)
 
         rows = []
         for row in qry.limit(args['rp']).offset(offset).all():
-            rows.append(marshal(row, ProductCategories.response_fields))
+            rows.append(marshal(row, ProductCategorieModel.response_fields))
 
         return rows, 200
 

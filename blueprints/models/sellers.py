@@ -10,7 +10,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import backref
 
 
-class Sellers(db.Model):
+class SellerModel(db.Model):
     __tablename__ = "sellers"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     nama = db.Column(db.String(50), nullable=False)

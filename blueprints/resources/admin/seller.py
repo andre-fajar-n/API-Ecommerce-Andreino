@@ -1,16 +1,16 @@
 from flask_restful import Resource, reqparse, marshal
 from blueprints import db, app, admin_required
-from blueprints.models.sellers import Sellers
+from blueprints.models.sellers import SellerModel
 from sqlalchemy import desc
 import math
 
-class AdminSeller(Resource):
+class AdminSellerResource(Resource):
     def options(self):
         return {'status': 'ok'}, 200
 
     @admin_required
     def delete(self, id):
-        qry = Sellers.query.get(id)
+        qry = SellerModel.query.get(id)
         if qry is None:
             app.logger.debug('DEBUG : id tidak ada')
             return {'status': 'NOT_FOUND'}, 404
@@ -36,20 +36,20 @@ class AdminSeller(Resource):
 
         offset = (args['p'] * args['rp'] - args['rp'])
 
-        qry = Sellers.query
+        qry = SellerModel.query
         total_data = qry.count()
         total_page = math.ceil(total_data/args["rp"])
 
         if args['orderby'] is not None:
             if args['orderby'] == 'nama':
                 if args['sort'] == 'desc':
-                    qry = qry.order_by(desc(Sellers.id))
+                    qry = qry.order_by(desc(SellerModel.id))
                 else:
-                    qry = qry.order_by(Sellers.id)
+                    qry = qry.order_by(SellerModel.id)
 
         rows = []
         for row in qry.limit(args['rp']).offset(offset).all():
-            rows.append(marshal(row, Sellers.response_fields))
+            rows.append(marshal(row, SellerModel.response_fields))
 
         app.logger.debug('DEBUG : %s', rows)
 

@@ -1,17 +1,17 @@
 from flask_restful import marshal, reqparse
 from blueprints import admin_required, db, app
-from blueprints.models.users import Users
+from blueprints.models.users import UserModel
 from flask_restful import Resource
 from sqlalchemy import func, desc
 import math
 
-class AdminUser(Resource):
+class AdminUserResource(Resource):
     def options(self):
         return {'status': 'ok'}, 200
     
     @admin_required
     def delete(self, id):
-        qry = Users.query.get(id)
+        qry = UserModel.query.get(id)
         if qry is None:
             app.logger.debug('DEBUG : id tidak ada')
             return {'status': 'NOT_FOUND'}, 404
@@ -35,21 +35,21 @@ class AdminUser(Resource):
 
         offset = (args['p'] * args['rp'] - args['rp'])
 
-        qry = Users.query
+        qry = UserModel.query
         total_data = qry.count()
         total_page = math.ceil(total_data/args["rp"])
 
         if args['orderby'] is not None:
             if args['orderby'] == 'username':
                 if args['sort'] == 'desc':
-                    qry = qry.order_by(desc(Users.id))
+                    qry = qry.order_by(desc(UserModel.id))
                 else:
-                    qry = qry.order_by(Users.id)
+                    qry = qry.order_by(UserModel.id)
 
         rows = []
 
         for row in qry.limit(args['rp']).offset(offset).all():
-            rows.append(marshal(row, Users.response_fields))
+            rows.append(marshal(row, UserModel.response_fields))
 
         return {
             "page": args["p"],

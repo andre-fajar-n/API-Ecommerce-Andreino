@@ -1,16 +1,16 @@
-from blueprints.models.buyers import Buyers
+from blueprints.models.buyers import BuyerModel
 from blueprints import admin_required, db, app
 from flask_restful import Resource, marshal, reqparse
 from sqlalchemy import desc
 import math
 
-class AdminBuyer(Resource):
+class AdminBuyerResource(Resource):
     def options(self):
         return {'status': 'ok'}, 200
 
     @admin_required
     def delete(self, id):
-        qry = Buyers.query.get(id)
+        qry = BuyerModel.query.get(id)
         if qry is None:
             app.logger.debug('DEBUG : id tidak ada')
             return {'status': 'NOT_FOUND'}, 404
@@ -34,20 +34,20 @@ class AdminBuyer(Resource):
 
         offset = (args['p'] * args['rp'] - args['rp'])
 
-        qry = Buyers.query
+        qry = BuyerModel.query
         total_data = qry.count()
         total_page = math.ceil(total_data/args["rp"])
 
         if args['orderby'] is not None:
             if args['orderby'] == 'nama':
                 if args['sort'] == 'desc':
-                    qry = qry.order_by(desc(Buyers.id))
+                    qry = qry.order_by(desc(BuyerModel.id))
                 else:
-                    qry = qry.order_by(Buyers.id)
+                    qry = qry.order_by(BuyerModel.id)
 
         rows = []
         for row in qry.limit(args['rp']).offset(offset).all():
-            rows.append(marshal(row, Buyers.response_fields))
+            rows.append(marshal(row, BuyerModel.response_fields))
 
         app.logger.debug('DEBUG : %s', rows)
 

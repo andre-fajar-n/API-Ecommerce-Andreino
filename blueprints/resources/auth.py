@@ -3,7 +3,7 @@ from flask_jwt_extended.utils import create_access_token, get_jwt_claims, get_jw
 from flask_jwt_extended.view_decorators import jwt_required
 from blueprints import db, internal_required
 from blueprints import app
-from blueprints.models.users import Users
+from blueprints.models.users import UserModel
 from flask_restful import Api, Resource, marshal
 from flask_restful import reqparse
 import hashlib
@@ -29,13 +29,13 @@ class Register(Resource):
         encoded = ('%s%s' % (args['password'], salt)).encode('utf-8')
         hash_pass = hashlib.sha512(encoded).hexdigest()
 
-        user = Users(args['username'], hash_pass, salt, args['status_internal'], args['status_penjual'], args['status_admin'])
+        user = UserModel(args['username'], hash_pass, salt, args['status_internal'], args['status_penjual'], args['status_admin'])
         db.session.add(user)
         db.session.commit()
 
         app.logger.debug('DEBUG : %s', user)
 
-        return marshal(user, Users.response_fields), 200, {'Content-Type': 'application/json'}
+        return marshal(user, UserModel.response_fields), 200, {'Content-Type': 'application/json'}
 
 class Login(Resource):
     def options(self):
@@ -47,7 +47,7 @@ class Login(Resource):
         parser.add_argument('password', location='args', required=True)
         args = parser.parse_args()
 
-        qry_client = Users.query.filter_by(username=args['username']).first()
+        qry_client = UserModel.query.filter_by(username=args['username']).first()
 
         result = {
             "message":{},
@@ -58,7 +58,7 @@ class Login(Resource):
             encoded = ('%s%s' %(args['password'], client_salt)).encode('utf-8')
             hash_pass = hashlib.sha512(encoded).hexdigest()
             if hash_pass == qry_client.password:
-                qry_client = marshal(qry_client, Users.jwt_client_fields)
+                qry_client = marshal(qry_client, UserModel.jwt_client_fields)
                 token = create_access_token(identity=args['username'], user_claims=qry_client)
 
                 result["message"]["en"] = "Login success"

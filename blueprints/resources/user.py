@@ -1,6 +1,6 @@
 from flask.blueprints import Blueprint
 from flask_restful import Api, reqparse
-from blueprints.models.users import Users
+from blueprints.models.users import UserModel
 from flask_jwt_extended.utils import get_jwt_claims
 from blueprints import db, app, internal_required
 from flask_restful import Resource, marshal
@@ -17,10 +17,10 @@ class User(Resource):
     @internal_required
     def get(self):
         claims = get_jwt_claims()
-        qry = Users.query.get(claims["id"])
+        qry = UserModel.query.get(claims["id"])
         if qry is not None:
             app.logger.debug('DEBUG : %s', qry)
-            return marshal(qry, Users.response_fields), 200
+            return marshal(qry, UserModel.response_fields), 200
 
         app.logger.debug('DEBUG : id tidak ada')
         return {'status': 'NOT_FOUND'}, 404
@@ -28,7 +28,7 @@ class User(Resource):
     @internal_required
     def patch(self):
         claims = get_jwt_claims()
-        qry = Users.query.get(claims["id"])
+        qry = UserModel.query.get(claims["id"])
         if qry is None:
             app.logger.debug('DEBUG : id tidak ada')
             return {'status': 'NOT_FOUND'}, 404
@@ -57,6 +57,6 @@ class User(Resource):
 
         app.logger.debug('DEBUG : %s', qry)
 
-        return marshal(qry, Users.response_fields), 200, {'Content-Type': 'application/json'}
+        return marshal(qry, UserModel.response_fields), 200, {'Content-Type': 'application/json'}
 
 api.add_resource(User, "")

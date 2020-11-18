@@ -2,7 +2,7 @@ from flask import Blueprint
 from flask_restful import Resource, Api, reqparse, marshal, inputs
 from flask_jwt_extended import get_jwt_claims, jwt_required
 import json
-from blueprints.models.buyers import Buyers
+from blueprints.models.buyers import BuyerModel
 from blueprints import db, app, internal_required, admin_required
 from sqlalchemy import desc
 
@@ -23,21 +23,21 @@ class Buyer(Resource):
         parser.add_argument('phone_number', location='json', default="")
         args = parser.parse_args()
 
-        buyer = Buyers(args['name'], args['email'], args['address'], args['phone_number'], claims['id'])
+        buyer = BuyerModel(args['name'], args['email'], args['address'], args['phone_number'], claims['id'])
         db.session.add(buyer)
         db.session.commit()
 
         app.logger.debug('DEBUG : %s', buyer)
 
-        return marshal(buyer, Buyers.response_fields), 200, {'Content-Type': 'application/json'}
+        return marshal(buyer, BuyerModel.response_fields), 200, {'Content-Type': 'application/json'}
 
     @internal_required
     def get(self):
         claims = get_jwt_claims()
-        qry = Buyers.query.filter_by(user_id=claims['id']).first()
+        qry = BuyerModel.query.filter_by(user_id=claims['id']).first()
         if qry is not None:
             app.logger.debug('DEBUG : %s', qry)
-            return marshal(qry, Buyers.response_fields), 200
+            return marshal(qry, BuyerModel.response_fields), 200
 
         app.logger.debug('DEBUG : biodata tidak ada')
         return {'status': 'biodata tidak ada'}, 404
@@ -45,7 +45,7 @@ class Buyer(Resource):
     @internal_required
     def patch(self):
         claims = get_jwt_claims()
-        qry = Buyers.query.filter_by(user_id=claims['id']).first()
+        qry = BuyerModel.query.filter_by(user_id=claims['id']).first()
         if qry is None:
             app.logger.debug('DEBUG : biodata tidak ada')
             return {'status': 'biodata tidak ada'}, 404
@@ -73,6 +73,6 @@ class Buyer(Resource):
 
         app.logger.debug('DEBUG : %s', qry)
 
-        return marshal(qry, Buyers.response_fields), 200, {'Content-Type': 'application/json'}
+        return marshal(qry, BuyerModel.response_fields), 200, {'Content-Type': 'application/json'}
 
 api.add_resource(Buyer, '')
