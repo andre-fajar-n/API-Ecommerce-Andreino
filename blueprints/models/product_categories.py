@@ -10,7 +10,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import backref
 
 
-class ProductCategorieModel(db.Model):
+class ProductCategoryModel(db.Model):
     __tablename__ = "product_types"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     tipe_produk = db.Column(db.String(50), nullable=False)

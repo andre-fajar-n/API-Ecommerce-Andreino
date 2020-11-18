@@ -3,7 +3,7 @@ from flask_jwt_extended.utils import get_jwt_claims
 from flask_restful import Api, Resource, marshal, reqparse
 from sqlalchemy import desc
 from blueprints import db, app, seller_required
-from blueprints.models.product_categories import ProductCategorieModel
+from blueprints.models.product_categories import ProductCategoryModel
 from blueprints.models.sellers import SellerModel
 from blueprints.models.products import ProductModel
 import werkzeug
@@ -45,7 +45,7 @@ class ProductSeller(Resource):
             return {'data': '', 'message': 'Something when wrong', 'status': 'error'}, 500
 
         # get id dari product type yang kita input
-        product_type = ProductCategorieModel.query.filter_by(tipe_produk=args['kategori']).first()
+        product_type = ProductCategoryModel.query.filter_by(tipe_produk=args['kategori']).first()
         if product_type is None:
             app.logger.debug('DEBUG : kategori tidak ada')
             return {'message': 'kategori tidak ditemukan'}, 404
@@ -116,7 +116,7 @@ class ProductSeller(Resource):
 
         if args['kategori'] is not None:
             # get id dari product type yang kita input
-            product_type = ProductCategorieModel.query.filter_by(tipe_produk=args['kategori']).first()
+            product_type = ProductCategoryModel.query.filter_by(tipe_produk=args['kategori']).first()
             if product_type is None:
                 app.logger.debug('DEBUG : kategori tidak ada')
                 return {'message': 'kategori tidak ditemukan'}, 404
