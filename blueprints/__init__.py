@@ -127,9 +127,9 @@ from blueprints.resources.admin import bp_admin
 from blueprints.resources.buyer import bp_buyer
 from blueprints.resources.seller import bp_seller
 from blueprints.resources.product import bp_product
+from blueprints.resources.cart import bp_cart
 
 from blueprints.kategori_produk.resources import bp_product_categories
-from blueprints.keranjang.resources import bp_cart
 from blueprints.checkout import bp_checkout
 from blueprints.history.resources import bp_history
 
@@ -140,9 +140,9 @@ app.register_blueprint(bp_admin, url_prefix='/admin')
 app.register_blueprint(bp_buyer, url_prefix='/buyer')
 app.register_blueprint(bp_seller, url_prefix='/seller')
 app.register_blueprint(bp_product, url_prefix='/product')
+app.register_blueprint(bp_cart, url_prefix='/cart')
 
 app.register_blueprint(bp_product_categories, url_prefix='/kategori')
-app.register_blueprint(bp_cart, url_prefix='/keranjang')
 app.register_blueprint(bp_checkout, url_prefix='/checkout')
 app.register_blueprint(bp_history, url_prefix="/history")
 

@@ -1,18 +1,15 @@
 from flask import Blueprint
-from flask_restful import Resource, Api, reqparse, marshal, inputs
-from flask_jwt_extended import get_jwt_claims, jwt_required
-import json
+from flask_restful import Resource, Api, reqparse, marshal
+from flask_jwt_extended import get_jwt_claims
 from blueprints.models.carts import CartModel
 from blueprints.models.transaction_details import TransactionDetailModel
 from blueprints.models.buyers import BuyerModel
 from blueprints.models.products import ProductModel
 from blueprints.models.sellers import SellerModel
-from blueprints import db, app, internal_required, seller_required, admin_required
-from sqlalchemy import desc
+from blueprints import db, app, internal_required
 
 bp_cart = Blueprint('cart', __name__)
 api = Api(bp_cart)
-
 
 class CartsResource(Resource):
     def options(self):
@@ -126,6 +123,5 @@ class CartsResource(Resource):
         app.logger.debug('DEBUG : data telah terhapus')
 
         return {'status': 'DELETED'}, 200
-
 
 api.add_resource(CartsResource, '', '/<id>')
