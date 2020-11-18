@@ -125,10 +125,10 @@ from blueprints.resources.auth import bp_auth
 from blueprints.resources.user import bp_user
 from blueprints.resources.admin import bp_admin
 from blueprints.resources.buyer import bp_buyer
+from blueprints.resources.seller import bp_seller
 
 from blueprints.kategori_produk.resources import bp_product_categories
 from blueprints.keranjang.resources import bp_cart
-from blueprints.penjual.resources import bp_seller
 from blueprints.produk.resources import bp_product
 from blueprints.checkout import bp_checkout
 from blueprints.history.resources import bp_history
@@ -138,10 +138,10 @@ app.register_blueprint(bp_auth, url_prefix='/auth')
 app.register_blueprint(bp_user, url_prefix='/user')
 app.register_blueprint(bp_admin, url_prefix='/admin')
 app.register_blueprint(bp_buyer, url_prefix='/buyer')
+app.register_blueprint(bp_seller, url_prefix='/seller')
 
 app.register_blueprint(bp_product_categories, url_prefix='/kategori')
 app.register_blueprint(bp_cart, url_prefix='/keranjang')
-app.register_blueprint(bp_seller, url_prefix='/penjual')
 app.register_blueprint(bp_product, url_prefix='/produk')
 app.register_blueprint(bp_checkout, url_prefix='/checkout')
 app.register_blueprint(bp_history, url_prefix="/history")

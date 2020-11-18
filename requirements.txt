@@ -38,3 +38,4 @@ toml==0.10.2
 urllib3==1.25.11
 Werkzeug==0.16.0
 python-dotenv
+cryptography
