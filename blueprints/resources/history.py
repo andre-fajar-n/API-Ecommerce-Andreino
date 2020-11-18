@@ -1,13 +1,12 @@
 from flask import Blueprint
-from flask_restful import Resource, Api, reqparse, marshal, inputs
-from flask_jwt_extended import get_jwt_claims, jwt_required
-import json
+from flask_restful import Resource, Api, marshal
+from flask_jwt_extended import get_jwt_claims
 from blueprints.models.carts import CartModel
 from blueprints.models.buyers import BuyerModel
 from blueprints.models.sellers import SellerModel
 from blueprints.models.products import ProductModel
 from blueprints.models.transaction_details import TransactionDetailModel
-from blueprints import db, app, internal_required, seller_required, admin_required
+from blueprints import internal_required, seller_required
 from sqlalchemy import desc
 
 bp_history = Blueprint('history', __name__)
@@ -89,5 +88,5 @@ class HistorySeller(Resource):
             result.append({'cart': marshal_qry, 'transaction_detail': list_td})
         return result, 200
     
-api.add_resource(HistoryBuyer, '/pembeli')
-api.add_resource(HistorySeller, '/penjual')
+api.add_resource(HistoryBuyer, '/buyer')
+api.add_resource(HistorySeller, '/seller')

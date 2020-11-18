@@ -129,9 +129,9 @@ from blueprints.resources.seller import bp_seller
 from blueprints.resources.product import bp_product
 from blueprints.resources.cart import bp_cart
 from blueprints.resources.product_category import bp_product_categories
+from blueprints.resources.history import bp_history
 
 from blueprints.checkout import bp_checkout
-from blueprints.history.resources import bp_history
 
 # Register Blueprint
 app.register_blueprint(bp_auth, url_prefix='/auth')
@@ -142,8 +142,8 @@ app.register_blueprint(bp_seller, url_prefix='/seller')
 app.register_blueprint(bp_product, url_prefix='/product')
 app.register_blueprint(bp_cart, url_prefix='/cart')
 app.register_blueprint(bp_product_categories, url_prefix='/product_category')
+app.register_blueprint(bp_history, url_prefix="/history")
 
 app.register_blueprint(bp_checkout, url_prefix='/checkout')
-app.register_blueprint(bp_history, url_prefix="/history")
 
 db.create_all()
