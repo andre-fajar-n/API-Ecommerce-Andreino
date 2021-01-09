@@ -1,2 +1,2 @@
 export FLASK_ENV=Development
-python3 app.py
+python3 wsgi.py

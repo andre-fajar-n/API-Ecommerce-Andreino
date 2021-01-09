@@ -6,6 +6,7 @@ from blueprints import db, app, seller_required
 from blueprints.models.product_categories import ProductCategoryModel
 from blueprints.models.sellers import SellerModel
 from blueprints.models.products import ProductModel
+from flask_restful_swagger import swagger
 import werkzeug
 import uuid
 import os
@@ -185,6 +186,7 @@ class ProductUserAll(Resource):
     def options(self):
         return {'status': 'ok'}, 200
 
+    @swagger.operation(notes='some really good notes')
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument('p', type=int, location='args', default=1)

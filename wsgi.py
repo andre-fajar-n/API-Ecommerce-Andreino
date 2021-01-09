@@ -5,11 +5,13 @@ import sys
 from logging.handlers import RotatingFileHandler
 from blueprints import app, manager
 from werkzeug.contrib.cache import SimpleCache
+from flask_restful_swagger import swagger
 
 cache = SimpleCache()
 
 #####################################################
-api = Api(app, catch_all_404s=True)
+# api = Api(app, catch_all_404s=True)
+api = swagger.docs(Api(app, catch_all_404s=True), apiVersion='0.1', api_spec_url='/docs')
 
 ######################################################
 if __name__ == "__main__":
@@ -19,7 +21,7 @@ if __name__ == "__main__":
     except Exception as e:
         # logging.getLogger().setLevel('INFO')
         formatter = logging.Formatter("[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s")
-        log_handler = RotatingFileHandler("%s/%s" % (app.root_path, './storage/log/app.log'), maxBytes=100000, backupCount=10)
+        log_handler = RotatingFileHandler("%s/%s" % (app.root_path, '../storage/log/app.log'), maxBytes=100000, backupCount=10)
         log_handler.setLevel(logging.INFO)
         log_handler.setFormatter(formatter)
         app.logger.addHandler(log_handler)
